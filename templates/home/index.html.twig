@@ -13,8 +13,19 @@
 
     This friendly message is coming from:
     <ul>
-        <a href="{{ path('app_import') }}">Import</a>
-        <li>Your template at <code>/Users/eliottandre/Library/CloudStorage/OneDrive-Personnel/Depot_Git/synfony/GSB/templates/home/index.html.twig</code></li>
+        <li><a href="{{ path('app_import') }}">Import</a></li>
+        <li><a href="{{ path('app_select_fiche') }}">Ficje Selector</a></li>
+        <li><a href="{{ path('app_user_index') }}">User</a></li>
+        <li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('app_logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Login</a>
+            {% endif %}
+        </li>
+
+
+
     </ul>
 </div>
 {% endblock %}

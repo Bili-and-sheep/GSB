@@ -1,3 +1,7 @@
 body {
-    background-color: skyblue;
+    background-color: #ef9ddc;
+    a{
+        color: crimson;
+        text-decoration: none;
+    }
 }
