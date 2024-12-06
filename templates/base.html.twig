@@ -4,6 +4,12 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <style>
+            .bg-dark-purple {
+                background-color: #4B0082; /* Dark purple color */
+            }
+        </style>
         {% block stylesheets %}
         {% endblock %}
 
@@ -11,7 +17,27 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
+    <header>
+        <nav class="bg-dark-purple p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="{{ path('app_home') }}" class="text-white text-lg font-semibold">GSB</a>
+                <div class="space-x-4">
+                    <a href="{{ path('app_import') }}" class="text-gray-300 hover:text-white">Import</a>
+
+                    <a href="{{ path('app_fiche_frais_index') }}" class="text-gray-300 hover:text-white">FicheFrais Index</a>
+                    <a href="{{ path('app_select_fiche') }}" class="text-gray-300 hover:text-white">Ficje Selector</a>
+                    <a href="{{ path('app_user_index') }}" class="text-gray-300 hover:text-white">User Index</a>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a href="{{ path('app_mydrilla') }}" class="text-gray-300 hover:text-white">{{ app.user.nom }}</a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="text-gray-300 hover:text-white">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
     <body>
-        {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
     </body>
 </html>

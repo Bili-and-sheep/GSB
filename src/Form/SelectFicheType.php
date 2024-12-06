@@ -32,9 +32,6 @@ class SelectFicheType extends AbstractType
                         ->where('f.User = :user')
                         ->setParameter('user', $user);
                 },
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Valider',
             ]);
     }
 

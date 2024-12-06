@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New FicheFrais{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Create New FicheFrais</h1>
+
+        <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+            {{ include('fiche_frais/_form.html.twig') }}
+        </div>
+
+{#        <div class="mt-6">#}
+{#            <a href="{{ path('app_fiche_frais_index') }}" class="inline-block bg-gray-600 text-white py-2 px-4 rounded-lg shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">#}
+{#                Back to list#}
+{#            </a>#}
+{#        </div>#}
+    </div>
+{% endblock %}

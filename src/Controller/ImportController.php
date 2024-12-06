@@ -92,7 +92,7 @@ class ImportController extends AbstractController
         $this->entityManager->persist($etat);
         $this->entityManager->flush();
 
-        return $this->render('home/index.html.twig', [
+        return $this->render('import/index.html.twig', [
             'controller_name' => 'importEtat Done',
         ]);
     }
@@ -128,7 +128,7 @@ class ImportController extends AbstractController
         $this->entityManager->persist($frfo);
         $this->entityManager->flush();
 
-        return $this->render('home/index.html.twig', [
+        return $this->render('import/index.html.twig', [
             'controller_name' => 'importFraisForfait Done',
         ]);
     }

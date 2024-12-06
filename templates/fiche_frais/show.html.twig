@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FicheFrais{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">FicheFrais</h1>
+
+        <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+            <table class="table-auto w-full text-gray-700">
+                <tbody>
+                <tr class="border-b">
+                    <th class="py-2 text-left font-semibold">Id</th>
+                    <td class="py-2">{{ fiche_frai.id }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left font-semibold">Mois</th>
+                    <td class="py-2">{{ fiche_frai.mois ? fiche_frai.mois|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left font-semibold">NbJustificatifs</th>
+                    <td class="py-2">{{ fiche_frai.nbJustificatifs }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left font-semibold">MontantValid</th>
+                    <td class="py-2">{{ fiche_frai.montantValid }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left font-semibold">DateModif</th>
+                    <td class="py-2">{{ fiche_frai.dateModif ? fiche_frai.dateModif|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6 space-x-4">
+            <a href="{{ path('app_fiche_frais_index') }}" class="inline-block bg-gray-600 text-white py-2 px-4 rounded-lg shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                Back to list
+            </a>
+
+            <a href="{{ path('app_fiche_frais_edit', {'id': fiche_frai.id}) }}" class="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Edit
+            </a>
+
+            {{ include('fiche_frais/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

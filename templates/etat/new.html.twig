@@ -3,9 +3,17 @@
 {% block title %}New Etat{% endblock %}
 
 {% block body %}
-    <h1>Create new Etat</h1>
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Create New Etat</h1>
 
-    {{ include('etat/_form.html.twig') }}
+        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            {{ include('etat/_form.html.twig') }}
+        </div>
 
-    <a href="{{ path('app_etat_index') }}">back to list</a>
+        <div class="mt-6">
+            <a href="{{ path('app_etat_index') }}" class="inline-block bg-gray-600 text-white py-2 px-4 rounded shadow hover:bg-gray-700">
+                Back to list
+            </a>
+        </div>
+    </div>
 {% endblock %}

@@ -3,60 +3,72 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">User Details</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ user.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ user.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ user.adresse }}</td>
-            </tr>
-            <tr>
-                <th>Cp</th>
-                <td>{{ user.cp }}</td>
-            </tr>
-            <tr>
-                <th>Ville</th>
-                <td>{{ user.ville }}</td>
-            </tr>
-            <tr>
-                <th>DateEmbauche</th>
-                <td>{{ user.dateEmbauche ? user.dateEmbauche|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>OldId</th>
-                <td>{{ user.oldId }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <tbody>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Id</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.id }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Email</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Roles</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.roles ? user.roles|json_encode : '' }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Password</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.password }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Nom</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.nom }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Prenom</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.prenom }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Adresse</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.adresse }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Cp</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.cp }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Ville</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.ville }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">Date Embauche</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.dateEmbauche ? user.dateEmbauche|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">OldId</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.oldId }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+        <div class="mt-6 space-x-4">
+            <a href="{{ path('app_user_index') }}" class="inline-block bg-gray-600 text-white py-2 px-4 rounded-lg shadow hover:bg-gray-700">
+                Back to List
+            </a>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+            <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="inline-block bg-yellow-600 text-white py-2 px-4 rounded-lg shadow hover:bg-yellow-700">
+                Edit
+            </a>
+        </div>
 
-    {{ include('user/_delete_form.html.twig') }}
+        <div class="mt-6">
+            {{ include('user/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

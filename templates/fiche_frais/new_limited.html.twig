@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Créer une fiche frais limitée</h1>
+
+        <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+            {{ form_start(form) }}
+            {{ form_widget(form, {
+                attr: {
+                    class: 'space-y-4'
+                }
+            }) }}
+            <button class="bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Enregistrer
+            </button>
+            {{ form_end(form) }}
+        </div>
+
+        <div class="mt-6">
+            <a href="{{ path('app_fiche_frais_index') }}" class="inline-block bg-gray-600 text-white py-2 px-4 rounded shadow hover:bg-gray-700">
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+{% endblock %}

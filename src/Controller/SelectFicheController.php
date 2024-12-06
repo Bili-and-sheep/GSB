@@ -4,7 +4,9 @@
 
 namespace App\Controller;
 
+use App\Entity\FicheFrais;
 use App\Form\SelectFicheType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +23,15 @@ class SelectFicheController extends AbstractController
 
         $selectedFiche = null;
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var FicheFrais $selectedFiche */
             $selectedFiche = $form->get('fiche')->getData();
         }
 
-            return $this->render('select_fiche/index.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('select_fiche/index.html.twig', [
+            'form' => $form,
+            'selectedFiche' => $selectedFiche,
             'controller_name' => 'SelectFicheController',
+
         ]);
-
-
     }
 }

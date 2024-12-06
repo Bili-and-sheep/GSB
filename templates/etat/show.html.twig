@@ -3,24 +3,34 @@
 {% block title %}Etat{% endblock %}
 
 {% block body %}
-    <h1>Etat</h1>
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Etat Details</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ etat.id }}</td>
-            </tr>
-            <tr>
-                <th>Libelle</th>
-                <td>{{ etat.libelle }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <tbody>
+                <tr class="bg-gray-50">
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">Id</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ etat.id }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">Libelle</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ etat.libelle }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <a href="{{ path('app_etat_index') }}">back to list</a>
+        <div class="mt-6 space-x-4">
+            <a href="{{ path('app_etat_index') }}" class="inline-block bg-gray-600 text-white py-2 px-4 rounded shadow hover:bg-gray-700">
+                Back to list
+            </a>
 
-    <a href="{{ path('app_etat_edit', {'id': etat.id}) }}">edit</a>
+            <a href="{{ path('app_etat_edit', {'id': etat.id}) }}" class="inline-block bg-blue-600 text-white py-2 px-4 rounded shadow hover:bg-blue-700">
+                Edit
+            </a>
 
-    {{ include('etat/_delete_form.html.twig') }}
+            {{ include('etat/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}
