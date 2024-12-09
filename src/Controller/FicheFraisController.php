@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Etat;
 use App\Entity\FicheFrais;
+use App\Entity\FraisForfait;
+use App\Entity\LigneFraisForfait;
 use App\Form\SaisiFraisForfaitType;
 use App\Form\FicheFraisType;
 use App\Repository\FicheFraisRepository;
@@ -44,6 +46,77 @@ final class FicheFraisController extends AbstractController
         ]);
     }
 
+    #[Route('/Add/LFF', name: 'app_fiche_frais_add_lff', methods: ['GET', 'POST'])]
+    public function editCurrent(Request $request, EntityManagerInterface $entityManager, FicheFraisRepository $ficheFraisRepository): Response {
+        //Recupere l'ID du user connecté
+        $user = $this->getUser();
+        //Recupere le mois actuel
+        $currentMonth = new \DateTime('first day of this month');
+
+        //si la fiche de frais de ce mois ci n'existe pas, on la crée , sinon on récupère la fiche de frais la recherche du user doit ce faire par rapport à son id
+        $ficheFrais = $ficheFraisRepository->findOneBy(['mois' => $currentMonth, 'user' => $user]);
+
+        if ($ficheFrais == null) {
+            $ficheFrais = new FicheFrais();
+            $ficheFrais->setMois($currentMonth);
+            $ficheFrais->setUser($user);
+
+            //récupération de l'état "crée" (id = 1) pour la fiche de frais
+            $etat = $entityManager->getRepository(Etat::class)->find(1);
+            $ficheFrais->setEtat($etat);
+            $ficheFrais->setMontantValid(0);
+            $ficheFrais->setNbJustificatifs(0);
+            $ficheFrais->setDateModif(new \DateTime());
+
+            $ligneFraisForfaitKM= new LigneFraisForfait();
+            $ligneFraisForfaitKM->setFicheFrais($ficheFrais);
+            $fraisForfaitKM = $entityManager->getRepository(FraisForfait::class)->find(2);
+            $ligneFraisForfaitKM->setFraisForfait($fraisForfaitKM);
+            $ligneFraisForfaitKM->setQuantite(0);
+            $entityManager->persist($ligneFraisForfaitKM);
+
+            $ligneFraisForfaitNUI= new LigneFraisForfait();
+            $ligneFraisForfaitNUI->setFicheFrais($ficheFrais);
+            $fraisForfaitNUI = $entityManager->getRepository(FraisForfait::class)->find(3);
+            $ligneFraisForfaitNUI->setFraisForfait($fraisForfaitNUI);
+            $ligneFraisForfaitNUI->setQuantite(0);
+            $entityManager->persist($ligneFraisForfaitNUI);
+
+            $ligneFraisForfaitREP= new LigneFraisForfait();
+            $ligneFraisForfaitREP->setFicheFrais($ficheFrais);
+            $fraisForfaitREP = $entityManager->getRepository(FraisForfait::class)->find(4);
+            $ligneFraisForfaitREP->setFraisForfait($fraisForfaitREP);
+            $ligneFraisForfaitREP->setQuantite(0);
+            $entityManager->persist($ligneFraisForfaitREP);
+
+            $ligneFraisForfaitETP= new LigneFraisForfait();
+            $ligneFraisForfaitETP->setFicheFrais($ficheFrais);
+            $fraisForfaitETP = $entityManager->getRepository(FraisForfait::class)->find(1);
+            $ligneFraisForfaitETP->setFraisForfait($fraisForfaitETP);
+            $ligneFraisForfaitETP->setQuantite(0);
+            $entityManager->persist($ligneFraisForfaitETP);
+
+
+
+            $entityManager->persist($ficheFrais);
+            $entityManager->flush();
+        }
+
+        $form = $this->createForm(SaisiFraisForfaitType::class, $ligneFraisForfait);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ligneFraisForfait->setFicheFrais($ficheFrais);
+            $entityManager->persist($ligneFraisForfait);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_fiche_frais_add_lff', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->render('fiche_frais/new_limited.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
     #[Route('/{id}', name: 'app_fiche_frais_show', methods: ['GET'])]
     public function show(FicheFrais $ficheFrai): Response
     {
@@ -80,72 +153,4 @@ final class FicheFraisController extends AbstractController
 
         return $this->redirectToRoute('app_fiche_frais_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    #[Route('/new/limited', name: 'app_fiche_frais_limited_new', methods: ['GET', 'POST'])]
-    public function newLimited(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $ficheFrai = new FicheFrais();
-        $ficheFrai->setUser($this->getUser()); // Fixe l'utilisateur connecté
-
-        $form = $this->createForm(SaisiFraisForfaitType::class, $ficheFrai, [
-            'current_user' => $this->getUser(), // Option supplémentaire si besoin
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($ficheFrai);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_fiche_frais_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('fiche_frais/new_limited.html.twig', [
-            'fiche_frai' => $ficheFrai,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/limited', name: 'app_fiche_frais_limited', methods: ['GET', 'POST'])]
-    public function editCurrent(Request $request, EntityManagerInterface $entityManager, FicheFraisRepository $ficheFraisRepository
-    ): Response {
-        $user = $this->getUser();
-        $currentMonth = new \DateTime('first day of this month');
-
-        // Fetch the fiche frais for the current user and month
-        $ficheFrai = $ficheFraisRepository->findOneBy([
-            'User' => $user,
-            'mois' => $currentMonth,
-        ]);
-
-        // If no fiche frais exists, create a new one
-        if (!$ficheFrai) {
-            $ficheFrai = new FicheFrais();
-            $ficheFrai->setUser($user)
-                ->setMois($currentMonth)
-                ->setEtat($entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'En cours']))
-                ->setDateModif(new \DateTime());
-            $entityManager->persist($ficheFrai);
-            $entityManager->flush();
-        }
-
-        // Restrict form to specific fields based on roles
-        $formType = $this->isGranted('ROLE_USER') ? SaisiFraisForfaitType::class : FicheFraisType::class;
-
-        $form = $this->createForm($formType, $ficheFrai);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ficheFrai->setDateModif(new \DateTime()); // Update modification date
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Fiche frais mise à jour avec succès.');
-            return $this->redirectToRoute('app_fiche_frais_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('fiche_frais/edit.html.twig', [
-            'fiche_frai' => $ficheFrai,
-            'form' => $form,
-        ]);
-    }
-
 }

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FraisForfait Index{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto mt-6 p-6 bg-white rounded-lg shadow">
+        <h1 class="text-2xl font-semibold mb-4">FraisForfait Index</h1>
+
+        <div class="flex justify-end mb-4">
+            <a href="{{ path('app_frais_forfait_new') }}" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                Create New
+            </a>
+        </div>
+
+        <table class="table-auto w-full text-left border-collapse border border-gray-300">
+            <thead class="bg-gray-100">
+            <tr>
+                <th class="border border-gray-300 px-4 py-2">Id</th>
+                <th class="border border-gray-300 px-4 py-2">Libelle</th>
+                <th class="border border-gray-300 px-4 py-2">Montant</th>
+                <th class="border border-gray-300 px-4 py-2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for frais_forfait in frais_forfaits %}
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-300 px-4 py-2">{{ frais_forfait.id }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ frais_forfait.libelle }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ frais_forfait.montant }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <a href="{{ path('app_frais_forfait_show', {'id': frais_forfait.id}) }}" class="text-blue-600 hover:underline">Show</a>
+                        <a href="{{ path('app_frais_forfait_edit', {'id': frais_forfait.id}) }}" class="text-green-600 hover:underline ml-2">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center border border-gray-300 px-4 py-2">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
