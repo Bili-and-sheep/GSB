@@ -35,12 +35,14 @@
                     <li>{{ ligne.FraisForfait.libelle }} : {{ ligne.quantite }}</li>
                 {% endfor %}
             </ul>
-            <h3 class="text-xl font-semibold mt-4">Ligne Frais Hors Forfait</h3>
-            <ul>
-                {% for ligne in selectedFiche.ligneFraisHorsForfait %}
-                    <li>{{ ligne.libelle }} : {{ ligne.montant }}</li>
-                {% endfor %}
-            </ul>
+            {% if selectedFiche.ligneFraisHorsForfait is not empty %}
+                <h3 class="text-xl font-semibold mt-4">Ligne Frais Hors Forfait</h3>
+                <ul>
+                    {% for ligne in selectedFiche.ligneFraisHorsForfait %}
+                        <li>{{ ligne.libelle }} : {{ ligne.montant }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     {% endif %}
 

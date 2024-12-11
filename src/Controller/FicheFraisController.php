@@ -118,6 +118,7 @@ final class FicheFraisController extends AbstractController
             return $this->redirectToRoute('app_fiche_frais_add_lff', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('fiche_frais/new_limited.html.twig', [
+            'controller_name' => 'LFF',
             'form' => $form->createView(),
         ]);
     }
