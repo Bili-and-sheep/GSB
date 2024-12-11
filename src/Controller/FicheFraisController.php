@@ -48,13 +48,14 @@ final class FicheFraisController extends AbstractController
 
     #[Route('/Add/LFF', name: 'app_fiche_frais_add_lff', methods: ['GET', 'POST'])]
     public function editCurrent(Request $request, EntityManagerInterface $entityManager, FicheFraisRepository $ficheFraisRepository): Response {
-        //Recupere l'ID du user connecté
+
         $user = $this->getUser();
+
         //Recupere le mois actuel
         $currentMonth = new \DateTime('first day of this month');
 
         //si la fiche de frais de ce mois ci n'existe pas, on la crée , sinon on récupère la fiche de frais la recherche du user doit ce faire par rapport à son id
-        $ficheFrais = $ficheFraisRepository->findOneBy(['mois' => $currentMonth, 'user' => $user]);
+        $ficheFrais = $ficheFraisRepository->findOneBy(['mois' => $currentMonth, 'User' => $user]);
 
         if ($ficheFrais == null) {
             $ficheFrais = new FicheFrais();
@@ -102,11 +103,16 @@ final class FicheFraisController extends AbstractController
             $entityManager->flush();
         }
 
-        $form = $this->createForm(SaisiFraisForfaitType::class, $ligneFraisForfait);
+        $ligneFraisForfait = new LigneFraisForfait();
+        $form = $this->createForm(SaisiFraisForfaitType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $ligneFraisForfait->setFicheFrais($ficheFrais);
+            $ligneFraisForfait->setQuantite($form->get('km')->getData());
+            $ligneFraisForfait->setQuantite($form->get('nuites')->getData());
+            $ligneFraisForfait->setQuantite($form->get('repas')->getData());
+            $ligneFraisForfait->setQuantite($form->get('etp')->getData());
             $entityManager->persist($ligneFraisForfait);
             $entityManager->flush();
             return $this->redirectToRoute('app_fiche_frais_add_lff', [], Response::HTTP_SEE_OTHER);
