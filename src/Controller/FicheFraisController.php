@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\FicheFrais;
 use App\Entity\FraisForfait;
 use App\Entity\LigneFraisForfait;
+use App\Entity\LigneFraisHorsForfait;
 use App\Form\SaisiFraisForfaitType;
 use App\Form\FicheFraisType;
 use App\Repository\FicheFraisRepository;
@@ -14,8 +15,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/fiche/frais')]
+#[IsGranted('ROLE_USER')]
 final class FicheFraisController extends AbstractController
 {
     #[Route(name: 'app_fiche_frais_index', methods: ['GET'])]
@@ -57,6 +60,7 @@ final class FicheFraisController extends AbstractController
         //si la fiche de frais de ce mois ci n'existe pas, on la crée , sinon on récupère la fiche de frais la recherche du user doit ce faire par rapport à son id
         $ficheFrais = $ficheFraisRepository->findOneBy(['mois' => $currentMonth, 'User' => $user]);
 
+
         if ($ficheFrais == null) {
             $ficheFrais = new FicheFrais();
             $ficheFrais->setMois($currentMonth);
@@ -97,31 +101,58 @@ final class FicheFraisController extends AbstractController
             $ligneFraisForfaitETP->setQuantite(0);
             $entityManager->persist($ligneFraisForfaitETP);
 
-
-
             $entityManager->persist($ficheFrais);
             $entityManager->flush();
         }
+        else{
+            $ficheFrais = $ficheFraisRepository->findOneBy(['mois' => $currentMonth, 'User' => $user]);
 
-        $ligneFraisForfait = new LigneFraisForfait();
-        $form = $this->createForm(SaisiFraisForfaitType::class);
+        }
+
+        $form = $this->createForm(SaisiFraisForfaitType::class, [
+            'km' => $ficheFrais->getLigneFraisForfait()[1]->getQuantite(),
+            'nuites' => $ficheFrais->getLigneFraisForfait()[2]->getQuantite(),
+            'repas' => $ficheFrais->getLigneFraisForfait()[3]->getQuantite(),
+            'etp' => $ficheFrais->getLigneFraisForfait()[0]->getQuantite(),
+        ]);
+
+
+        $ligneHorsFraisForfait= new LigneFraisHorsForfait();
+        $entityManager->persist($ligneHorsFraisForfait);
+        $entityManager->flush();
+
+
+
+
+
+
+
+
+
+
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $ligneFraisForfait->setFicheFrais($ficheFrais);
-            $ligneFraisForfait->setQuantite($form->get('km')->getData());
-            $ligneFraisForfait->setQuantite($form->get('nuites')->getData());
-            $ligneFraisForfait->setQuantite($form->get('repas')->getData());
-            $ligneFraisForfait->setQuantite($form->get('etp')->getData());
-            $entityManager->persist($ligneFraisForfait);
+
+            $ficheFrais->getLigneFraisForfait()[1]->setQuantite($form->get('km')->getData());
+            $ficheFrais->getLigneFraisForfait()[2]->setQuantite($form->get('nuites')->getData());
+            $ficheFrais->getLigneFraisForfait()[3]->setQuantite($form->get('repas')->getData());
+            $ficheFrais->getLigneFraisForfait()[0]->setQuantite($form->get('etp')->getData());
+
+            $entityManager->persist($ficheFrais);
             $entityManager->flush();
+
             return $this->redirectToRoute('app_fiche_frais_add_lff', [], Response::HTTP_SEE_OTHER);
+
         }
         return $this->render('fiche_frais/new_limited.html.twig', [
             'controller_name' => 'LFF',
             'form' => $form->createView(),
+
         ]);
     }
+
+
 
 
     #[Route('/{id}', name: 'app_fiche_frais_show', methods: ['GET'])]

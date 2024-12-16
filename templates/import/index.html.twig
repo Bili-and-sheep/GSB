@@ -3,24 +3,38 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-        .button-container { display: flex; flex-wrap: wrap; gap: 10px; }
-        .button-container a { text-decoration: none; padding: 10px 20px; background-color: #007bff; color: white; border-radius: 5px; flex: 1 1 calc(25% - 10px); box-sizing: border-box; text-align: center; }
-    </style>
+    <div class="container mx-auto px-4 py-6">
+        <div class="p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">{{ controller_name }}</h1>
 
-    <div class="example-wrapper">
-        <h1>Hello {{ controller_name }}! ✅</h1>
-
-        <div class="button-container">
-            <a href="{{ path('app_import_user') }}">Import User</a>
-            <a href="{{ path('app_import_etat') }}">Create Stats</a>
-            <a href="{{ path('app_import_fraisforfait') }}">Create Frais Forfait</a>
-            <a href="{{ path('app_import_ff') }}">Import Fiche Frais</a>
-            <a href="{{ path('app_import_lff') }}">Import Ligne Frais Forfait</a>
-            <a href="{{ path('app_import_lfhf') }}">Import Ligne Frais Hors Forfait</a>
-
+        <div class="bg-white p-6 rounded-lg shadow-md mx-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="{{ path('app_import_user') }}"
+                   class="w-full bg-blue-600 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Import User
+                </a>
+                <a href="{{ path('app_import_etat') }}"
+                   class="w-full bg-blue-600 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Create Stats
+                </a>
+                <a href="{{ path('app_import_fraisforfait') }}"
+                   class="w-full bg-blue-600 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Create Frais Forfait
+                </a>
+                <a href="{{ path('app_import_ff') }}"
+                   class="w-full bg-blue-600 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Import Fiche Frais
+                </a>
+                <a href="{{ path('app_import_lff') }}"
+                   class="w-full bg-blue-600 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Import Ligne Frais Forfait
+                </a>
+                <a href="{{ path('app_import_lfhf') }}"
+                   class="w-full bg-blue-600 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Import Ligne Frais Hors Forfait
+                </a>
+            </div>
         </div>
+    </div>
     </div>
 {% endblock %}
