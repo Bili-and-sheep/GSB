@@ -78,4 +78,6 @@ final class FraisForfaitController extends AbstractController
 
         return $this->redirectToRoute('app_frais_forfait_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
