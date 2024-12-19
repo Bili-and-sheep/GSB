@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Top 3 des visiteurs{% endblock %}
+
+{% block body %}
+    <div class="p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Top 3 des visiteurs médicaux - Frais validés</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mx-6">
+            {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+            <div class="space-y-4">
+                <div>
+                    {{ form_label(form.month, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.month, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none'}}) }}
+                </div>
+
+                <div>
+                    {{ form_widget(form.submit, {'attr': {'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+
+        {% if topVisitors is not empty %}
+            <h2 class="text-lg font-semibold text-gray-800 mt-8 mb-4">Résultats pour le mois sélectionné :</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md mx-6">
+                <table class="w-full table-auto border-collapse border border-gray-300">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nom du visiteur</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Montant total validé</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for visitor in topVisitors %}
+                        <tr class="{% if loop.index is odd %}bg-gray-50{% else %}bg-white{% endif %}">
+                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">{{ visitor.visitorName }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">{{ visitor.totalAmount | number_format(2, ',', ' ') }} €</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-gray-500 mt-4">Aucun résultat trouvé pour le mois sélectionné.</p>
+        {% endif %}
+    </div>
+{% endblock %}
