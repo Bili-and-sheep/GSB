@@ -69,4 +69,15 @@ class LigneFraisForfait
 
         return $this;
     }
+
+    public function getMontant(): float
+    {
+        // Le montant total de toute la ligne de frais forfait
+        return $this->FraisForfait->getMontant() * $this->quantite;
+    }
+    public function getMontantLL(): float
+    {
+        // Le montant total est calculé comme quantité x montant unitaire
+        return $this->quantite * $this->FraisForfait->getMontant();
+    }
 }

@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Entity\FicheFrais;
+use App\Entity\LigneFraisForfait;
 use App\Form\SelectFicheType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,18 +21,23 @@ class SelectFicheController extends AbstractController
     {
         $form = $this->createForm(SelectFicheType::class, null, ['user' => $user]);
         $form->handleRequest($request);
-
+        $montant = 0;
         $selectedFiche = null;
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var FicheFrais $selectedFiche */
             $selectedFiche = $form->get('fiche')->getData();
+            if ($selectedFiche) {
+                foreach ($selectedFiche->getLigneFraisForfait() as $ligne) {
+                    $montant += $ligne->getMontant();
+                }
+            }
         }
 
         return $this->render('select_fiche/index.html.twig', [
             'form' => $form,
             'selectedFiche' => $selectedFiche,
             'controller_name' => 'SelectFicheController',
-
+            'montant' => $montant,
         ]);
     }
 }
