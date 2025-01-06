@@ -109,6 +109,7 @@ final class FicheFraisController extends AbstractController
 
         }
 
+//        dd($ficheFrais);
         $form = $this->createForm(SaisiFraisForfaitType::class, [
             'km' => $ficheFrais->getLigneFraisForfait()[1]->getQuantite(),
             'nuites' => $ficheFrais->getLigneFraisForfait()[2]->getQuantite(),
@@ -117,8 +118,8 @@ final class FicheFraisController extends AbstractController
         ]);
 
 
-        $ligneHorsFraisForfait= new LigneFraisHorsForfait();
-        $entityManager->persist($ligneHorsFraisForfait);
+//        $ligneHorsFraisForfait= new LigneFraisHorsForfait();
+//        $entityManager->persist($ligneHorsFraisForfait);
         $entityManager->flush();
 
 
