@@ -22,8 +22,8 @@
 
     {% if selectedFiche %}
         <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl relative justify-center mx-auto">
-            <h2 class="text-2xl font-bold mb-4">Selected Fiche Details</h2>
-            <p><span class="font-semibold">Id:</span> {{ selectedFiche.id }}</p>
+            <h2 class="text-2xl font-bold mb-4">Fiche du {{ selectedFiche.mois|date('Y-m-d') }}</h2>
+{#            <p><span class="font-semibold">Id:</span> {{ selectedFiche.id }}</p>#}
             <p><span class="font-semibold">Mois:</span> {{ selectedFiche.mois|date('Y-m-d') }}</p>
             <p><span class="font-semibold">Nb Justificatifs:</span> {{ selectedFiche.nbJustificatifs }}</p>
             <p><span class="font-semibold">Montant Valid:</span> {{ selectedFiche.montantValid }}</p>

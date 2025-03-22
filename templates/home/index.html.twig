@@ -3,42 +3,53 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="mt-8 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6">Hello {{ controller_name }}! ✅</h1>
+        <h1 class="text-3xl font-bold mb-6">Hello {{ app.user.prenom }} {{ app.user.nom }}</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="{{ path('app_import') }}" class="block bg-blue-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-600">
-                Import
-            </a>
-            <a href="{{ path('app_etat_index') }}" class="block bg-green-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-green-600">
-                Etat
-            </a>
-            <a href="{{ path('app_select_fiche') }}" class="block bg-yellow-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-yellow-600">
-                Select Fiche
-            </a>
-            <a href="{{ path('app_user_index') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-600">
-                User Index
-            </a>
-            <a href="{{ path('app_fiche_frais_index') }}" class="block bg-indigo-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-indigo-600">
-                FicheFrais Index
-            </a>
-            <a href="{{ path('app_fiche_frais_add_lff') }}" class="block bg-red-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-red-600">
-                New FicheFrais Test 1 (moyen gepeto)
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="{{ path('app_select_fiche') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                Select Fiche ✅
             </a>
 
-            <a href="{{ path('app_etat_index') }}" class="block bg-red-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-red-600">
-                Etat Index
+            <a href="{{ path('app_fiche_frais_add_lff') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                Ajouter Frais Forfait
             </a>
-            <a href="{{ path('app_frais_forfait_index') }}" class="block bg-red-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-red-600">
-                FraisForfait Index
-            </a>
-            <a href="{{ path('app_lepodium') }}" class="block bg-red-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-red-600">
+
+            <a href="{{ path('app_lepodium') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
                 La Creme de la Creme
             </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
+        </div>
+    </div>
+    {% else %}
 
-
-
+    {% endif %}
+    <div class="mt-8 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Index</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="{{ path('app_etat_index') }}" class="block bg-blue-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-800">
+                Etat Index ✅
+            </a>
+            <a href="{{ path('app_user_index') }}" class="block bg-blue-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-800">
+                User Index ✅
+            </a>
+            <a href="{{ path('app_fiche_frais_index') }}" class="block bg-blue-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-800">
+                FicheFrais Index ✅
+            </a>
+            <a href="{{ path('app_frais_forfait_index') }}" class="block bg-blue-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-blue-800">
+                FraisForfait Index ✅
+            </a>
+        </div>
+    </div>
+    <div class="mt-8 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">The Big Boy</h1>
+        <div class="grid grid-cols-1 md:grid-cols-max gap-4">
+            <a href="{{ path('app_import') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                Import ✅
+            </a>
         </div>
     </div>
 {% endblock %}

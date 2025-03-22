@@ -14,25 +14,25 @@ class SaisiFraisForfaitType extends AbstractType
     {
         $builder
             ->add('km', IntegerType::class, [
-                    'label' => 'Kilomètres',
+                    'label' => 'Kilomètres : ',
                     'attr' => [
                         'placeholder' => 'Kilomètres'
                     ]
             ])
             ->add('nuites', IntegerType::class, [
-                    'label' => 'Nuitées',
+                    'label' => 'Nuitées : ',
                     'attr' => [
                         'placeholder' => 'Nuitées'
                     ]
             ])
             ->add('repas', IntegerType::class, [
-                    'label' => 'Repas',
+                    'label' => 'Repas : ',
                     'attr' => [
                         'placeholder' => 'Repas'
                     ]
             ])
             ->add('etp', IntegerType::class, [
-                    'label' => 'Etape',
+                    'label' => 'Etape : ',
                     'attr' => [
                         'placeholder' => 'Etape'
                     ]

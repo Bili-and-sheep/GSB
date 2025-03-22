@@ -34,8 +34,8 @@
                     <tbody>
                     {% for visitor in topVisitors %}
                         <tr class="{% if loop.index is odd %}bg-gray-50{% else %}bg-white{% endif %}">
-                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">{{ visitor.visitorName }}</td>
-                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">{{ visitor.totalAmount | number_format(2, ',', ' ') }} €</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">{{ visitor.nom }} {{ visitor.prenom }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">{{ visitor.totalMontant | number_format(2, ',', ' ') }} €</td>
                         </tr>
                     {% endfor %}
                     </tbody>

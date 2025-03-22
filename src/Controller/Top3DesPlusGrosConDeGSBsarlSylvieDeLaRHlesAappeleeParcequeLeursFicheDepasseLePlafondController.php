@@ -59,7 +59,7 @@ class Top3DesPlusGrosConDeGSBsarlSylvieDeLaRHlesAappeleeParcequeLeursFicheDepass
 
             $qb = $em->getRepository('App\Entity\FicheFrais')
                 ->createQueryBuilder('f')
-                ->join('f.user', 'u')
+                ->join('f.User', 'u')
                 ->select('u.nom, u.prenom, SUM(f.montantValid) as totalMontant')
                 ->where('MONTH(f.mois) = :month')
                 ->andWhere('YEAR(f.mois) = :year')

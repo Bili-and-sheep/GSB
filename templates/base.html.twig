@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="FR">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -22,11 +22,6 @@
             <div class="container mx-auto flex justify-between items-center">
                 <a href="{{ path('app_home') }}" class="text-white text-lg font-semibold">GSB</a>
                 <div class="space-x-4">
-                    <a href="{{ path('app_import') }}" class="text-gray-300 hover:text-white">Import</a>
-
-                    <a href="{{ path('app_fiche_frais_index') }}" class="text-gray-300 hover:text-white">FicheFrais Index</a>
-                    <a href="{{ path('app_select_fiche') }}" class="text-gray-300 hover:text-white">Ficje Selector</a>
-                    <a href="{{ path('app_user_index') }}" class="text-gray-300 hover:text-white">User Index</a>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <a href="{{ path('app_mydrilla') }}" class="text-gray-300 hover:text-white">{{ app.user.nom }}</a>
                     {% else %}

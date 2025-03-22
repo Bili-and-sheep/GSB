@@ -24,7 +24,7 @@ class SelectFicheType extends AbstractType
                 'choice_label' => function (FicheFrais $ficheFrais) {
                     return $ficheFrais->getMois()->format('Y-m'); // Adjust the format as needed
                 },
-                'label' => 'Fiche',
+                'label' => 'Fiche du : ',
                 'placeholder' => 'Choisir une fiche',
                 'required' => true,
                 'query_builder' => function (FicheFraisRepository $repo) use ($user) {

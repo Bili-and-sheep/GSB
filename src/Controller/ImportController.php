@@ -171,6 +171,7 @@ class ImportController extends AbstractController
                     break;
             }
 
+
             $newFF->setUser($this->entityManager->getRepository(User::class)->findOneBy(['oldId' => $ff->idVisiteur]));
 
             $this->entityManager->persist($newFF);
@@ -259,4 +260,34 @@ class ImportController extends AbstractController
             'controller_name' => 'importLigneFicheHorsFrais Done',
         ]);
     }
+
+    #[Route('/import/deleteAll', name: 'app_import_delete_all', methods: ['GET', 'POST'])]
+    public function deleteAll(): Response
+    {
+        // Suppression des entités dans le bon ordre pour respecter les clés étrangères
+        $repositories = [
+            LigneFraisHorsForfait::class,
+            LigneFraisForfait::class,
+            FicheFrais::class,
+            User::class,
+            FraisForfait::class,
+            Etat::class,
+        ];
+
+        foreach ($repositories as $repository) {
+            $entities = $this->entityManager->getRepository($repository)->findAll();
+            foreach ($entities as $entity) {
+                $this->entityManager->remove($entity);
+            }
+        }
+
+        // Effectuer la suppression
+        $this->entityManager->flush();
+
+        return $this->render('import/index.html.twig', [
+            'controller_name' => 'All to data are gone !',
+        ]);
+    }
+
+
 }
