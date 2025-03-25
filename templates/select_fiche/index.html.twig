@@ -21,7 +21,7 @@
 
 
     {% if selectedFiche %}
-        <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl relative justify-center mx-auto">
+        <div class="p-4 m-4 bg-white shadow-md rounded-lg max-w-3xl relative justify-center mx-auto">
             <h2 class="text-2xl font-bold mb-4">Fiche du {{ selectedFiche.mois|date('Y-m-d') }}</h2>
 {#            <p><span class="font-semibold">Id:</span> {{ selectedFiche.id }}</p>#}
             <p><span class="font-semibold">Mois:</span> {{ selectedFiche.mois|date('Y-m-d') }}</p>
@@ -29,7 +29,9 @@
             <p><span class="font-semibold">Montant Valid:</span> {{ selectedFiche.montantValid }}</p>
             <p><span class="font-semibold">Date Modif:</span> {{ selectedFiche.dateModif|date('Y-m-d H:i:s') }}</p>
             <p><span class="font-semibold">Etat:</span> {{ selectedFiche.etat.libelle }}</p>
-            <h3 class="text-xl font-semibold mt-4">Ligne Frais Forfait</h3>
+        </div>
+        <div class="p-4 m-4 bg-white shadow-md rounded-lg max-w-3xl relative justify-center mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Ligne Frais Forfait</h2>
             <ul>
                 {% for ligne in selectedFiche.ligneFraisForfait %}
                     <li>{{ ligne.FraisForfait.libelle }} : {{ ligne.quantite }}</li>
@@ -38,15 +40,17 @@
                 {% endfor %}
             </ul>
             <p><span class="font-semibold">Total:</span> {{ montant }} €</p>
-            {% if selectedFiche.ligneFraisHorsForfait is not empty %}
-                <h3 class="text-xl font-semibold mt-4">Ligne Frais Hors Forfait</h3>
-                <ul>
-                    {% for ligne in selectedFiche.ligneFraisHorsForfait %}
-                        <li>{{ ligne.libelle }} : {{ ligne.montant }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
         </div>
+            {% if selectedFiche.ligneFraisHorsForfait is not empty %}
+                <div class="p-4 m-4 bg-white shadow-md rounded-lg max-w-3xl relative justify-center mx-auto">
+                    <h2 class="text-2xl font-bold mb-4">Ligne Frais Hors Forfait</h2>
+                        <ul>
+                            {% for ligne in selectedFiche.ligneFraisHorsForfait %}
+                                <li>{{ ligne.libelle }} : {{ ligne.montant }}</li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            {% endif %}
     {% endif %}
 
 {% endblock %}

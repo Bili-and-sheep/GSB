@@ -151,6 +151,7 @@ class ImportController extends AbstractController
             $newFF = new FicheFrais();
 // Convert the string to a DateTime object
             $mois = \DateTime::createFromFormat('Ym', $ff->mois);
+            $mois ->modify('first day of this month');
             $newFF->setMois($mois);
             $newFF->setNbJustificatifs($ff->nbJustificatifs);
             $newFF->setMontantValid($ff->montantValide);
@@ -199,6 +200,7 @@ class ImportController extends AbstractController
             $newLFF->setQuantite($lff->quantite);
 
             $mois = \DateTime::createFromFormat('Ym', $lff->mois);
+            $mois ->modify('first day of this month');
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['oldId' => $lff->idVisiteur]);
             $ficheFrais = $this->entityManager->getRepository(FicheFrais::class)->findOneBy(['mois' => $mois, 'User' => $user]);
             $newLFF->setFicheFrais($ficheFrais);
@@ -247,6 +249,7 @@ class ImportController extends AbstractController
 
             // Convert the mois string to a DateTime object
             $mois = \DateTime::createFromFormat('Ym', $lfhf->mois);
+            $mois ->modify('first day of this month');
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['oldId' => $lfhf->idVisiteur]);
             $ficheFrais = $this->entityManager->getRepository(FicheFrais::class)->findOneBy(['mois' => $mois, 'User' => $user]);
 
