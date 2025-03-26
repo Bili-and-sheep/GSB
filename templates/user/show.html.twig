@@ -53,6 +53,19 @@
                     <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">OldId</th>
                     <td class="px-4 py-2 text-sm text-gray-700">{{ user.oldId }}</td>
                 </tr>
+
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">isVerified</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.isVerified }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">googleAuthenticatorSecret</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.googleAuthenticatorSecret }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600 text-left">isTwoFactorEnabled</th>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ user.isTwoFactorEnabled }}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
