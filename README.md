@@ -1,76 +1,115 @@
-Voici un modèle de README pour ton projet Symfony **GSB**. Il prend en compte les structures de base d’un projet Symfony et les fichiers visibles dans le dépôt GitHub.
 
----
+# GSB Project - Appli-Frais
 
-# GSB
+## Project Context
 
-## Description
-GSB (Gestion des Services et Bilans) est une application Symfony permettant de gérer les services et bilans dans un environnement structuré. Le projet inclut la gestion des utilisateurs, l’administration des données, et le suivi des opérations avec des outils puissants pour les développeurs et administrateurs.
+This project is part of the BTS SIO SLAM option (Software Solutions and Business Applications) E6 assessment. The Appli-Frais application is designed for the pharmaceutical laboratory Galaxy Swiss Bourdin (GSB) and aims to standardize and secure the expense management process for medical representatives.
 
-## Prérequis
-Avant de démarrer, assurez-vous d'avoir installé les prérequis suivants :
-- **PHP** >= 8.0
-- **Composer**
-- **Symfony CLI** (optionnel mais recommandé pour le développement)
-- **Docker** (si vous utilisez les configurations Docker)
+## Main Objectives
 
-## Installation
+- **Standardize expense management** for medical representatives.
+- **Develop a secure web application** to replace existing systems (paper-based and outdated software).
+- **Ensure accurate tracking** of reimbursements and compliance with expense regulations.
 
-1. Clonez le dépôt
+## Key Features
+
+### For Medical Representatives:
+
+- Secure authentication into the application.
+- Monthly entry and modification of expenses (standardized and non-standardized).
+- Viewing reimbursement statuses over a one-year period.
+
+### For Accounting Department:
+
+- Monthly validation of expenses submitted by representatives.
+- Modification and removal of invalid expenses.
+- Payment processing and reimbursement tracking.
+
+## Technologies Used
+
+- **Framework:** Symfony
+- **Architecture:** MVC (Model-View-Controller)
+- **Language:** PHP
+- **Database:** MySQL (or other relational databases)
+
+## Installation and Setup
+
+1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/Bili-and-sheep/GSB.git
    cd GSB
    ```
-2. Configurez les variables d'environnement (un fichier `.env` est fourni mais assurez-vous d'ajuster les paramètres à votre environnement local).
+   
+2. **Configure environment variables:**
+
    ```bash
-    nano .env.local
+   nano .env.local
    ```
-3. Installez les dépendances via Composer
+
+3. **Install dependencies:**
+
    ```bash
    composer install
    ```
 
-4. Si vous utilisez Docker, vous pouvez démarrer les services :
-   ```bash
-   docker-compose up -d
-   ```
+4. **Set up the database:**
 
-5. Appliquez les migrations de la base de données :
    ```bash
+   php bin/console doctrine:database:create
    php bin/console doctrine:migrations:migrate
    ```
 
-## Lancer l’application
+5. **Start the server:**
 
-Si vous avez configuré Docker, accédez à l'application via l'URL de votre conteneur. Sinon, pour un développement local sans Docker, vous pouvez démarrer le serveur Symfony :
-```bash
-  php bin/console server:start
+   ```bash
+   symfony serve
+   ```
+
+Access: [http://localhost:8000](http://localhost:8000)
+
+## Project Structure
+
 ```
-Ou
-```bash
-  php bin/console serve -d
-```
-L’application sera accessible à [http://localhost:8000](http://localhost:8000).
-
-## Tests
-
-Les tests sont essentiels pour garantir la stabilité du projet. Exécutez les tests unitaires et fonctionnels avec PHPUnit :
-```bash
-  php bin/phpunit
+GSB-AppliFrais/
+├── config/           # Symfony configuration
+├── src/              # Controllers, entities, and business logic
+├── templates/        # Twig views
+├── migrations/       # Doctrine migrations
+├── public/           # Public resources
+├── tests/            # Unit tests
+└── assets/           # Frontend assets
 ```
 
-## Contribuer
+## Testing
 
-Les contributions sont les bienvenues ! N'hésitez pas à créer une **Pull Request** après avoir cloné ce dépôt et créé une branche pour vos modifications.
+Run unit and functional tests:
 
-1. Fork le dépôt.
-2. Créez une branche pour votre fonctionnalité (`git checkout -b feature/nom-de-la-feature`).
-3. Committez vos modifications (`git commit -am 'Ajoute une nouvelle fonctionnalité'`).
-4. Push vers votre fork (`git push origin feature/nom-de-la-feature`).
-5. Ouvrez une Pull Request.
+```bash
+php bin/phpunit
+```
 
-## License
+## Maintenance
 
-Ce projet est sous **MIT License**. Voir le fichier `LICENSE` pour plus de détails.
+- **Corrective:** Fix reported bugs.
+- **Adaptive:** Integrate improvements based on user feedback.
+
+## Security and Access
+
+- Secure authentication.
+- Role-based access control (Representative / Accountant).
+
+## Additional Documentation
+
+- Detailed explanatory diagrams are included in the technical documentation.
+- Comprehensive technical documentation will be provided upon completion.
+
+## Assessed Competencies
+
+- Design and development of a robust application solution.
+- Corrective and adaptive maintenance.
+- Secure and efficient data management.
 
 ---
+
+This project demonstrates comprehensive mastery of the competencies required in the BTS SIO SLAM option.

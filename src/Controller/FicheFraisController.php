@@ -116,10 +116,7 @@ final class FicheFraisController extends AbstractController
             'repas' => $ficheFrais->getLigneFraisForfait()[3]->getQuantite(),
             'etp' => $ficheFrais->getLigneFraisForfait()[0]->getQuantite(),
         ]);
-
-
-//        $ligneHorsFraisForfait= new LigneFraisHorsForfait();
-//        $entityManager->persist($ligneHorsFraisForfait);
+        
         $entityManager->flush();
 
 
