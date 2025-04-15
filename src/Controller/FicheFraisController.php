@@ -7,6 +7,7 @@ use App\Entity\FicheFrais;
 use App\Entity\FraisForfait;
 use App\Entity\LigneFraisForfait;
 use App\Entity\LigneFraisHorsForfait;
+use App\Form\SaisiFraisHorsForfaitType;
 use App\Form\SaisiFraisForfaitType;
 use App\Form\FicheFraisType;
 use App\Repository\FicheFraisRepository;
@@ -101,23 +102,28 @@ final class FicheFraisController extends AbstractController
             $ligneFraisForfaitETP->setQuantite(0);
             $entityManager->persist($ligneFraisForfaitETP);
 
+
             $entityManager->persist($ficheFrais);
             $entityManager->flush();
         }
         else{
             $ficheFrais = $ficheFraisRepository->findOneBy(['mois' => $currentMonth, 'User' => $user]);
-
         }
 
-//        dd($ficheFrais);
+
+
         $form = $this->createForm(SaisiFraisForfaitType::class, [
             'km' => $ficheFrais->getLigneFraisForfait()[1]->getQuantite(),
             'nuites' => $ficheFrais->getLigneFraisForfait()[2]->getQuantite(),
             'repas' => $ficheFrais->getLigneFraisForfait()[3]->getQuantite(),
             'etp' => $ficheFrais->getLigneFraisForfait()[0]->getQuantite(),
         ]);
-        
+
+        $ligneFraisHorsForfait = new LigneFraisHorsForfait();
+        $formLFHF = $this->createForm(SaisiFraisHorsForfaitType::class, $ligneFraisHorsForfait);
+
         $entityManager->flush();
+
 
 
         $form->handleRequest($request);
@@ -128,15 +134,28 @@ final class FicheFraisController extends AbstractController
             $ficheFrais->getLigneFraisForfait()[3]->setQuantite($form->get('repas')->getData());
             $ficheFrais->getLigneFraisForfait()[0]->setQuantite($form->get('etp')->getData());
 
+
             $entityManager->persist($ficheFrais);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_fiche_frais_add_lff', [], Response::HTTP_SEE_OTHER);
 
         }
+        $formLFHF->handleRequest($request);
+        if ($formLFHF->isSubmitted() && $formLFHF->isValid()) {
+            $ficheFrais->addLigneFraisHorsForfait($ligneFraisHorsForfait);
+            $ligneFraisHorsForfait->setFicheFrais($ficheFrais);
+            $entityManager->persist($ligneFraisHorsForfait);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_fiche_frais_add_lff', [], Response::HTTP_SEE_OTHER);
+
+        }
+
         return $this->render('fiche_frais/new_limited.html.twig', [
-            'controller_name' => 'LFF',
-            'form' => $form->createView(),
+            'controller_name' => 'SaisiFraisController',
+            'formLFF' => $form->createView(),
+            'formLFHF' => $formLFHF->createView(),
 
         ]);
     }

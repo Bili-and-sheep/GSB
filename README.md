@@ -81,6 +81,10 @@ GSB-AppliFrais/
 └── assets/           # Frontend assets
 ```
 
+## Database structure:
+![GSB data base structure](public/GSB_DDC.png)
+
+
 ## Testing
 
 Run unit and functional tests:
@@ -99,17 +103,5 @@ php bin/phpunit
 - Secure authentication.
 - Role-based access control (Representative / Accountant).
 
-## Additional Documentation
-
-- Detailed explanatory diagrams are included in the technical documentation.
-- Comprehensive technical documentation will be provided upon completion.
-
-## Assessed Competencies
-
-- Design and development of a robust application solution.
-- Corrective and adaptive maintenance.
-- Secure and efficient data management.
 
 ---
-
-This project demonstrates comprehensive mastery of the competencies required in the BTS SIO SLAM option.

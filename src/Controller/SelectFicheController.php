@@ -21,14 +21,18 @@ class SelectFicheController extends AbstractController
     {
         $form = $this->createForm(SelectFicheType::class, null, ['user' => $user]);
         $form->handleRequest($request);
-        $montant = 0;
+        $montantLFF = 0;
+        $montantLFHF = 0;
         $selectedFiche = null;
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var FicheFrais $selectedFiche */
             $selectedFiche = $form->get('fiche')->getData();
             if ($selectedFiche) {
                 foreach ($selectedFiche->getLigneFraisForfait() as $ligne) {
-                    $montant += $ligne->getMontant();
+                    $montantLFF += $ligne->getMontant();
+                }
+                foreach ($selectedFiche->getLigneFraisHorsForfait() as $ligne) {
+                    $montantLFHF += $ligne->getMontant();
                 }
             }
         }
@@ -37,7 +41,8 @@ class SelectFicheController extends AbstractController
             'form' => $form,
             'selectedFiche' => $selectedFiche,
             'controller_name' => 'SelectFicheController',
-            'montant' => $montant,
+            'montantLFF' => $montantLFF,
+            'montantLFHF' => $montantLFHF,
         ]);
     }
 }

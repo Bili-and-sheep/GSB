@@ -3,18 +3,20 @@
 {% block title %}Hello SelectFicheController!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
+
 
     <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
-        {{ form_start(form) }}
-        {{ form_row(form.fiche) }}
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Submit</button>
-{#        <a href="{{ path('app_fiche_frais_new') }}"#}
-{#           class="inline-block bg-green-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform transition-all duration-200 ease-in-out">#}
-{#                New Fiche Frais</a>#}
+        {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+        <div class="space-y-4">
+            <div>
+                {{ form_label(form.fiche, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(form.fiche, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none'}}) }}
+            </div>
+            <div>
+                {{ form_widget(form.submit, {'attr': {'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
+            </div>
+
+        </div>
         {{ form_end(form) }}
     </div>
 
@@ -35,20 +37,24 @@
             <ul>
                 {% for ligne in selectedFiche.ligneFraisForfait %}
                     <li>{{ ligne.FraisForfait.libelle }} : {{ ligne.quantite }}</li>
-                    <li> Montant des {{ ligne.FraisForfait.libelle }}  : {{ ligne.montant }}</li>
+                    <li> Montant des {{ ligne.FraisForfait.libelle }}  : {{ ligne.montant }}€</li>
                     <br>
                 {% endfor %}
             </ul>
-            <p><span class="font-semibold">Total:</span> {{ montant }} €</p>
+            <p><span class="font-semibold">Total:</span> {{ montantLFF }}€</p>
         </div>
             {% if selectedFiche.ligneFraisHorsForfait is not empty %}
                 <div class="p-4 m-4 bg-white shadow-md rounded-lg max-w-3xl relative justify-center mx-auto">
                     <h2 class="text-2xl font-bold mb-4">Ligne Frais Hors Forfait</h2>
                         <ul>
                             {% for ligne in selectedFiche.ligneFraisHorsForfait %}
-                                <li>{{ ligne.libelle }} : {{ ligne.montant }}</li>
+                                <li>{{ ligne.libelle }} : {{ ligne.montant }}€</li>
+                                <br>
                             {% endfor %}
+
                         </ul>
+
+                    <p><span class="font-semibold">Total:</span> {{ montantLFHF }}€</p>
                 </div>
             {% endif %}
     {% endif %}
