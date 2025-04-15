@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class SelectFicheController extends AbstractController
 {
     #[Route('/selectfiche', name: 'app_select_fiche')]
-    public function index(Request $request,UserInterface $user): Response
+    public function index(Request $request,UserInterface $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SelectFicheType::class, null, ['user' => $user]);
         $form->handleRequest($request);
@@ -37,6 +37,7 @@ class SelectFicheController extends AbstractController
             }
         }
 
+
         return $this->render('select_fiche/index.html.twig', [
             'form' => $form,
             'selectedFiche' => $selectedFiche,
@@ -44,5 +45,13 @@ class SelectFicheController extends AbstractController
             'montantLFF' => $montantLFF,
             'montantLFHF' => $montantLFHF,
         ]);
+    }
+    #[Route('/selectfiche/update/{id}', name: 'app_select_fiche_update', methods: ['POST'])]
+    public function updateToBeValided(FicheFrais $ficheFrais, EntityManagerInterface $entityManager): Response
+    {
+        $ficheFrais->setToBeValided(!$ficheFrais->getToBeValided()); // Toggle the state
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_select_fiche');
     }
 }

@@ -22,6 +22,9 @@ class FicheFrais
     #[ORM\Column]
     private ?int $nbJustificatifs = null;
 
+    #[ORM\Column]
+    private ?bool $ToBeValided = null;
+
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $montantValid = null;
 
@@ -33,6 +36,8 @@ class FicheFrais
 
     #[ORM\ManyToOne(inversedBy: 'ficheFrais')]
     private ?Etat $Etat = null;
+
+
 
     /**
      * @var Collection<int, LigneFraisForfait>
@@ -63,6 +68,18 @@ class FicheFrais
 
         return $this;
     }
+
+    public function getToBeValided(): bool
+    {
+        return $this->ToBeValided;
+    }
+    public function setToBeValided(bool $ToBeValided): static
+    {
+        $this->ToBeValided = $ToBeValided; // Corrected assignment
+
+        return $this;
+    }
+
 
     public function getMois(): ?\DateTimeInterface
     {
@@ -135,6 +152,7 @@ class FicheFrais
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, LigneFraisForfait>

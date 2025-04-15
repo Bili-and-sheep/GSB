@@ -156,6 +156,7 @@ class ImportController extends AbstractController
             $newFF->setNbJustificatifs($ff->nbJustificatifs);
             $newFF->setMontantValid($ff->montantValide);
             $newFF->setDateModif(new \DateTime($ff->dateModif));
+//            $newFF->setToBeValided = false;
 
             switch ($ff->idEtat) {
                 case 'CR':

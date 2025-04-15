@@ -14,6 +14,10 @@
                     <td class="py-2">{{ fiche_frai.id }}</td>
                 </tr>
                 <tr class="border-b">
+                    <th class="py-2 text-left font-semibold">ToBeValided</th>
+                    <td class="py-2">{{ fiche_frai.ToBeValided ? 'true' : 'false' }}</td>
+                </tr>
+                <tr class="border-b">
                     <th class="py-2 text-left font-semibold">Mois</th>
                     <td class="py-2">{{ fiche_frai.mois ? fiche_frai.mois|date('Y-m-d') : '' }}</td>
                 </tr>

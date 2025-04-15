@@ -17,20 +17,33 @@ class FicheFraisType extends AbstractType
         $builder
             ->add('mois', null, [
                 'widget' => 'single_text',
+                'label' => 'Date : ',
             ])
-            ->add('nbJustificatifs')
-            ->add('montantValid')
+            ->add('nbJustificatifs', null, [
+                'label' => 'Nombre de justificatifs : ',
+            ])
+            ->add('montantValid', null, [
+                'label' => 'Montant validé : ',
+            ])
+
             ->add('dateModif', null, [
                 'widget' => 'single_text',
+                'label' => 'Date de modification : ',
+            ])
+            ->add('ToBeValided', null, [
+                'label' => 'To Be Validated : ',
             ])
             ->add('User', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'nom',
+                'label' => 'Utilisateur : ',
             ])
             ->add('Etat', EntityType::class, [
                 'class' => Etat::class,
                 'choice_label' => 'libelle',
+                'label' => 'État : ',
             ])
+
         ;
     }
 

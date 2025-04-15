@@ -57,6 +57,15 @@
                     <p><span class="font-semibold">Total:</span> {{ montantLFHF }}€</p>
                 </div>
             {% endif %}
+        <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
+            <form method="post" action="{{ path('app_select_fiche_update', { id: selectedFiche.id }) }}">
+                <button type="submit" class="w-full font-semibold py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-offset-2
+                    {{ selectedFiche.toBeValided ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500' : 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500' }}">
+                    {{ selectedFiche.toBeValided ? 'Mark as Not Validated' : 'Toggle ToBeValided' }}
+                </button>
+            </form>
+        </div>
+
     {% endif %}
 
 {% endblock %}
