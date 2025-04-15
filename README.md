@@ -1,5 +1,5 @@
 
-# GSB Project - Appli-Frais
+# GSB Project
 
 ## Project Context
 
