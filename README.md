@@ -57,7 +57,7 @@ This project is part of the BTS SIO SLAM option (Software Solutions and Business
 
    ```bash
    php bin/console doctrine:database:create
-   php bin/console doctrine:migrations:migrate
+   php bin/console doctrine:schema:update --force
    ```
 
 5. **Start the server:**
@@ -71,7 +71,7 @@ Access: [http://localhost:8000](http://localhost:8000)
 ## Setup
 
 1. **Import Data**
-    - Import the initial data by goig in the route /import (or the BigBoy section of the menu).
+    - Import the initial data by going in the route /import (or the BigBoy section of the menu).
     - Click on every button in the order displayed to correctly import the data.
 
 2. **Modify default Users**

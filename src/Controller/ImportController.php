@@ -59,8 +59,10 @@ class ImportController extends AbstractController
             $this->entityManager->persist($newUser);
             $this->entityManager->flush();
         }
+        $this->addFlash('success', 'User imported successfully!');
 
         return $this->render('import/index.html.twig', [
+
             'controller_name' => 'importUser Done',
         ]);
     }
@@ -92,6 +94,7 @@ class ImportController extends AbstractController
         $this->entityManager->persist($etat);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Etat created successfully!');
         return $this->render('import/index.html.twig', [
             'controller_name' => 'importEtat Done',
         ]);
@@ -127,6 +130,8 @@ class ImportController extends AbstractController
         $frfo->setMontant(25.00);
         $this->entityManager->persist($frfo);
         $this->entityManager->flush();
+
+        $this->addFlash('success', 'Frais Forfait created successfully!');
 
         return $this->render('import/index.html.twig', [
             'controller_name' => 'importFraisForfait Done',
@@ -181,6 +186,7 @@ class ImportController extends AbstractController
             $this->entityManager->persist($newFF);
             $this->entityManager->flush();
         }
+        $this->addFlash('success', 'Fiche Frais imported successfully!');
 
         return $this->render('import/index.html.twig', [
             'controller_name' => 'importFicheFrais Done',
@@ -228,6 +234,8 @@ class ImportController extends AbstractController
             $this->entityManager->flush();
         }
 
+        $this->addFlash('success', 'Ligne Frais Forfait imported successfully!');
+
         return $this->render('import/index.html.twig', [
             'controller_name' => 'importLigneFicheFrais Done',
         ]);
@@ -263,6 +271,8 @@ class ImportController extends AbstractController
             $this->entityManager->flush();
         }
 
+        $this->addFlash('success', 'Ligne Frais Hors Forfait imported successfully!');
+
         return $this->render('import/index.html.twig', [
             'controller_name' => 'importLigneFicheHorsFrais Done',
         ]);
@@ -290,6 +300,7 @@ class ImportController extends AbstractController
 
         // Effectuer la suppression
         $this->entityManager->flush();
+        $this->addFlash('success', 'All data deleted successfully!');
 
         return $this->render('import/index.html.twig', [
             'controller_name' => 'All to data are gone !',

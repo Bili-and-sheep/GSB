@@ -3,6 +3,17 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 space-y-4 z-50">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="toast p-4 text-white {{ type == 'success' ? 'bg-green-500' : 'bg-red-500' }} rounded-lg shadow-md flex items-center justify-between" role="alert">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.remove()" class="ml-4 text-white font-bold">&times;</button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
     <div class="container mx-auto px-4 py-6">
         <div class="p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">{{ controller_name }}</h1>
@@ -41,4 +52,13 @@
         </div>
     </div>
     </div>
+
+    <script>
+        // Auto-dismiss toast messages after 5 seconds
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+                document.querySelectorAll(".toast").forEach(toast => toast.remove());
+            }, 5000);
+        });
+    </script>
 {% endblock %}
