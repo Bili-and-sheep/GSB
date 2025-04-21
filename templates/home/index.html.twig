@@ -4,31 +4,41 @@
 
 {% block body %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <div class="mt-8 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6">Hello {{ app.user.prenom }} {{ app.user.nom }}</h1>
+        <div class="mt-8 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold mb-6">Hello {{ app.user.prenom }} {{ app.user.nom }}</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <a href="{{ path('app_select_fiche') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
-                Select Fiche ✅
-            </a>
-            <a href="{{ path('app_lepodium') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
-                La Creme de la Creme ✅
-            </a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_select_fiche') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                        Select Fiche ✅
+                    </a>
+                {% endif %}
 
-            <a href="{{ path('app_fiche_frais_add_lff') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
-                Ajouter Frais Forfait ✅
-            </a>
-            <a href="{{ path('app_comptable_manegeFF') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
-                Comptable
-            </a>
+                {% if is_granted('ROLE_COMPTABLE') %}
+                    <a href="{{ path('app_lepodium') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                        La Creme de la Creme ✅
+                    </a>
+                {% endif %}
 
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_fiche_frais_add_lff') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                        Ajouter Frais Forfait ✅
+                    </a>
+                {% endif %}
 
+                {% if is_granted('ROLE_COMPTABLE') %}
+                    <a href="{{ path('app_comptable_manegeFF') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                        Comptable
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Autres éléments ici -->
+            </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-        </div>
-    </div>
     {% else %}
+
 
     {% endif %}
     <div class="mt-8 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">

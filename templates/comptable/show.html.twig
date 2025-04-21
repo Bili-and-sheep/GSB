@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche Frais - Comptable{% endblock %}
+
+{% block body %}
+    <div class="max-w-3xl mx-auto mt-6 bg-white p-6 shadow-md rounded-lg">
+
+        <h1 class="text-2xl font-bold mb-6 text-center">Détail de la Fiche de Frais</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div><strong>Mois :</strong> {{ fiche_frais.mois|date('Y-m') }}</div>
+            <div><strong>Justificatifs :</strong> {{ fiche_frais.nbJustificatifs }}</div>
+            <div><strong>Montant Validé :</strong> {{ fiche_frais.montantValid }} €</div>
+            <div><strong>Dernière modif :</strong> {{ fiche_frais.dateModif|date('Y-m-d H:i') }}</div>
+            <div><strong>État :</strong> {{ fiche_frais.etat.libelle }}</div>
+            <div><strong>Utilisateur :</strong> {{ fiche_frais.User.nom }} {{ fiche_frais.User.prenom }}</div>
+{#            <div><strong>LFF :</strong> {{ fiche_frais.ligneFraisForfait }}</div>#}
+{#            <div><strong>Hors Forfait :</strong> {{ fiche_frais.ligneFraisHorsForfait }}</div>#}
+        </div>
+
+        <h2 class="text-xl font-semibold mb-4">Modifier la fiche</h2>
+
+        {{ form_start(form) }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ form_row(form.ToBeValided) }}
+            {{ form_row(form.Etat) }}
+            {{ form_row(form.montantValid) }}
+            {{ form_row(form.nbJustificatifs) }}
+            {{ form_row(form.dateModif) }}
+        </div>
+
+        <div class="mt-6">
+                {{ form_widget(form.submit, {
+                    'attr': {
+                        'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4'
+                    }
+                }) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

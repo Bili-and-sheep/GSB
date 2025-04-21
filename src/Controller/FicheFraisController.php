@@ -66,6 +66,7 @@ final class FicheFraisController extends AbstractController
             $ficheFrais = new FicheFrais();
             $ficheFrais->setMois($currentMonth);
             $ficheFrais->setUser($user);
+            $ficheFrais->setToBeValided(false);
 
             //récupération de l'état "crée" (id = 1) pour la fiche de frais
             $etat = $entityManager->getRepository(Etat::class)->find(1);
@@ -101,7 +102,6 @@ final class FicheFraisController extends AbstractController
             $ligneFraisForfaitETP->setFraisForfait($fraisForfaitETP);
             $ligneFraisForfaitETP->setQuantite(0);
             $entityManager->persist($ligneFraisForfaitETP);
-
 
             $entityManager->persist($ficheFrais);
             $entityManager->flush();

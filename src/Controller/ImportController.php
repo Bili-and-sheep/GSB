@@ -156,7 +156,8 @@ class ImportController extends AbstractController
             $newFF->setNbJustificatifs($ff->nbJustificatifs);
             $newFF->setMontantValid($ff->montantValide);
             $newFF->setDateModif(new \DateTime($ff->dateModif));
-//            $newFF->setToBeValided = false;
+
+            //Set  le ToBeValided à false et crée un nouveau bool dans l'entité FicheFrais isValidated
 
             switch ($ff->idEtat) {
                 case 'CR':
@@ -205,6 +206,7 @@ class ImportController extends AbstractController
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['oldId' => $lff->idVisiteur]);
             $ficheFrais = $this->entityManager->getRepository(FicheFrais::class)->findOneBy(['mois' => $mois, 'User' => $user]);
             $newLFF->setFicheFrais($ficheFrais);
+
 
             switch ($lff->idFraisForfait) {
                 case 'ETP':

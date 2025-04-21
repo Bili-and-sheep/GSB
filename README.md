@@ -63,7 +63,7 @@ This project is part of the BTS SIO SLAM option (Software Solutions and Business
 5. **Start the server:**
 
    ```bash
-   symfony serve
+   symfony serve -d
    ```
 
 Access: [http://localhost:8000](http://localhost:8000)

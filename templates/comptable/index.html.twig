@@ -3,19 +3,49 @@
 {% block title %}Fiche Frais Management{% endblock %}
 
 {% block body %}
-    <div class="max-w-4xl mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Fiche Frais to Validate</h1>
 
-        <div class="space-y-2">
+    <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
+        <h1 class="text-2xl font-bold mb-4">Recherche de Fiche Frais</h1>
+
+        {{ form_start(form, { 'attr': { 'class': 'space-y-4' } }) }}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                {{ form_label(form.mois, 'Mois', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(form.mois, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+            </div>
+            <div>
+                {{ form_label(form.annee, 'Année', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(form.annee, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+            </div>
+            <div>
+                {{ form_label(form.user, 'Utilisateur', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(form.user, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+            </div>
+        </div>
+
+        <div>
+            {{ form_widget(form.submit, {
+                'attr': {
+                    'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4'
+                }
+            }) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
+        <h1 class="text-2xl font-bold mb-4">Fiche Frais à Valider</h1>
+        <div class="space-y-4">
             {% for fiche in ficheFrais %}
-                <form method="get" action="{{ path('app_fiche_frais_show', { id: fiche.id }) }}">
-                    <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                        {{ fiche.user.nom }} {{ fiche.user.prenom }} - {{ fiche.mois|date('Y-m-d') }}
+                <form method="get" action="{{ path('app_comptable_fiche', { id: fiche.id }) }}">
+                    <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 my-2">
+                        {{ fiche.user.nom }} {{ fiche.user.prenom }} - {{ fiche.mois|date('Y-m') }}
                     </button>
                 </form>
             {% else %}
-                <p class="text-gray-500">No fiche frais to validate.</p>
+                <p class="text-gray-500">Aucune fiche de frais à valider.</p>
             {% endfor %}
         </div>
     </div>
+
 {% endblock %}
