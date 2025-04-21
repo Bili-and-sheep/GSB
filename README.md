@@ -30,9 +30,9 @@ This project is part of the BTS SIO SLAM option (Software Solutions and Business
 - **Framework:** Symfony
 - **Architecture:** MVC (Model-View-Controller)
 - **Language:** PHP
-- **Database:** MySQL (or other relational databases)
+- **Database:** MySQL
 
-## Installation and Setup
+## Installation
 
 1. **Clone the repository:**
 
@@ -68,6 +68,21 @@ This project is part of the BTS SIO SLAM option (Software Solutions and Business
 
 Access: [http://localhost:8000](http://localhost:8000)
 
+## Setup
+
+1. **Import Data**
+    - Import the initial data by goig in the route /import (or the BigBoy section of the menu).
+    - Click on every button in the order displayed to correctly import the data.
+
+2. **Modify default Users**
+    - Go to the route /user and modify role of they user you want to use.
+    - By default I use ```villechalane.louis@gsb.fr```, with the password ```jux7g```.
+
+3. **Connect to GSB**
+   - Go to the route /login and connect with the user you just modified.
+   - You can now use the application.
+     - Be careful, if you don't give the right role to the user, you won't be able to access some part of the application.
+
 ## Project Structure
 
 ```
@@ -102,6 +117,6 @@ php bin/phpunit
 
 - Secure authentication.
 - Role-based access control (Representative / Accountant).
-
+- 2fa authentication for sensitive operations.
 
 ---
