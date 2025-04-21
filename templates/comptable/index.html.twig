@@ -39,7 +39,7 @@
             {% for fiche in ficheFrais %}
                 <form method="get" action="{{ path('app_comptable_fiche', { id: fiche.id }) }}">
                     <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 my-2">
-                        {{ fiche.user.nom }} {{ fiche.user.prenom }} - {{ fiche.mois|date('Y-m') }}
+                        {{ fiche.user.nom }} {{ fiche.user.prenom }} - {{ fiche.mois|date('Y-m') }} - {{ fiche.etat.libelle }}
                     </button>
                 </form>
             {% else %}

@@ -25,7 +25,7 @@ final class ComptableController extends AbstractController
 
         // Valeur par défaut : les fiches à valider
         $toBeValidedValue = $entityManager->getRepository(FicheFrais::class)->createQueryBuilder('f')
-            ->where('f.ToBeValided = :toBeValided')
+            ->where('f.toBeValided = :toBeValided')
             ->setParameter('toBeValided', true)
             ->setMaxResults(5)
             ->getQuery()
@@ -59,39 +59,30 @@ final class ComptableController extends AbstractController
 
     }
 
-    #[Route('/fiche/{id}', name: 'app_comptable_fiche', methods: ['GET'])]
-    public function show(FicheFrais $ficheFrais, Request $request): Response
+    #[Route('/fiche/{id}', name: 'app_comptable_fiche', methods: ['GET', 'POST'])]
+    public function show(FicheFrais $ficheFrais, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(FicheFraisComptableType::class);
+        $form = $this->createForm(FicheFraisComptableType::class, $ficheFrais);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $ficheFrais->setToBeValided($data['toBeValided']);
-            $ficheFrais->setEtat($data['etat']);
             $ficheFrais->setDateModif(new \DateTimeImmutable());
-            $ficheFrais->setMontantValide($data['montantValide']);
 
-            $ficheFrais->getLigneFraisForfait()->clear();
-            foreach ($data['ligneFraisForfait'] as $ligneFrais) {
-                $ficheFrais->addLigneFraisForfait($ligneFrais);
-            }
-            $ficheFrais->getLigneFraisHorsForfait()->clear();
-            foreach ($data['ligneFraisHorsForfait'] as $ligneFrais) {
-                $ficheFrais->addLigneFraisHorsForfait($ligneFrais);
-            }
-
-
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ficheFrais);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_comptable_manegeFF', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'Données sauvegardées avec succès.');
+            return $this->redirectToRoute('app_comptable_fiche', [
+                'id' => $ficheFrais->getId(),
+            ]);
         }
+
         return $this->render('comptable/show.html.twig', [
             'controller_name' => 'ComptableController',
             'form' => $form->createView(),
             'fiche_frais' => $ficheFrais,
+
         ]);
     }
 }

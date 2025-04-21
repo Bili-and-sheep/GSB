@@ -23,7 +23,7 @@ class FicheFrais
     private ?int $nbJustificatifs = null;
 
     #[ORM\Column]
-    private ?bool $ToBeValided = null;
+    private ?bool $toBeValided = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $montantValid = null;
@@ -71,11 +71,11 @@ class FicheFrais
 
     public function getToBeValided(): bool
     {
-        return $this->ToBeValided;
+        return $this->toBeValided;
     }
-    public function setToBeValided(bool $ToBeValided): static
+    public function setToBeValided(bool $toBeValided): static
     {
-        $this->ToBeValided = $ToBeValided; // Corrected assignment
+        $this->toBeValided = $toBeValided; // Corrected assignment
 
         return $this;
     }

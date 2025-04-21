@@ -13,8 +13,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FicheFraisComptableType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
+        /** @var FicheFrais|null $ficheFrais */
+        $ficheFrais = $options['data'];
+
+        $etat = $ficheFrais?->getEtat();
+        $etatId = $etat?->getId();
+
         $builder
 
             ->add('nbJustificatifs', null, [
@@ -24,30 +32,25 @@ class FicheFraisComptableType extends AbstractType
                 ]
             ])
 
-            ->add('ToBeValided', null, [
-                'label' => 'Valider : ',
-                'attr' => [
-                    'placeholder' => 'A valider'
-                ]
-            ])
             ->add('montantValid', null, [
                 'label' => 'Montant validé : ',
                 'attr' => [
-                    'placeholder' => 'Montant validé'
+                    'placeholder' => 'Montant validé en euros'
                 ]
             ])
             ->add('dateModif', null, [
-                'widget' => 'single_text',
-            ])
-
-
-
+                    'widget' => 'single_text',
+                    'label' => 'Date de modification : ',
+                    'data' => new \DateTime('now', new \DateTimeZone('Europe/Paris')),
+                ])
 
             ->add('Etat', EntityType::class, [
                 'class' => Etat::class,
                 'choice_label' => 'libelle',
+                'label' => 'État : ',
                 'placeholder' => 'Sélectionner un état :',
             ])
+
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer les modifications'
 
