@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\FicheFrais;
+use App\Entity\LigneFraisHorsForfait;
 use App\Form\FicheFraisComptableType;
 use App\Form\SelectFicheComptableType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,6 +84,31 @@ final class ComptableController extends AbstractController
             'form' => $form->createView(),
             'fiche_frais' => $ficheFrais,
 
+        ]);
+    }
+
+
+    #[Route('/fiche/update/{id}', name: 'app_comptable_fiche_update', methods: ['POST'])]
+    public function updateToBeValided(LigneFraisHorsForfait $lfgf, EntityManagerInterface $entityManager): Response
+    {
+        $lfgf->setIsValidate(!$lfgf->getIsValidate()); // toggle the boolean isValidate
+
+        $libelle = $lfgf->getLibelle();
+
+        if (str_starts_with($libelle, 'REFUSÉ : ')) {
+            // Si déjà refusé, on enlève le préfixe pour le réaccepter
+            $libelle = substr($libelle, strlen('REFUSÉ : '));
+        } else {
+            // Sinon on ajoute le préfixe pour le refuser
+            $libelle = 'REFUSÉ : ' . $libelle;
+        }
+
+        $lfgf->setLibelle($libelle);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_comptable_fiche', [
+            'id' => $lfgf->getFicheFrais()->getId()
         ]);
     }
 }

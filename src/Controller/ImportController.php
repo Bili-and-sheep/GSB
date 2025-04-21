@@ -258,7 +258,7 @@ class ImportController extends AbstractController
             $newLFhF->setLibelle($lfhf->libelle);
             $newLFhF->setDate(new \DateTime($lfhf->date));
             $newLFhF->setMontant($lfhf->montant);
-
+            $newLFhF->setIsValidate(true);
             // Convert the mois string to a DateTime object
             $mois = \DateTime::createFromFormat('Ym', $lfhf->mois);
             $mois ->modify('first day of this month');

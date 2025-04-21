@@ -14,6 +14,8 @@ class LigneFraisHorsForfait
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column]
+    private ?bool $validate = true;
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
@@ -30,10 +32,20 @@ class LigneFraisHorsForfait
     {
         return $this->id;
     }
+    public function getIsValidate(): ?bool
+    {
+        return $this->validate;
+    }
 
     public function setId(int $id): static
     {
         $this->id = $id;
+
+        return $this;
+    }
+    public function setIsValidate(bool $validate): static
+    {
+        $this->validate = $validate;
 
         return $this;
     }

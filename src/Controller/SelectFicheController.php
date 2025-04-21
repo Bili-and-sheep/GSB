@@ -26,13 +26,15 @@ class SelectFicheController extends AbstractController
         $selectedFiche = null;
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var FicheFrais $selectedFiche */
-            $selectedFiche = $form->get('id')->getData();
+            $selectedFiche = $form->get('fiche')->getData();
             if ($selectedFiche) {
                 foreach ($selectedFiche->getLigneFraisForfait() as $ligne) {
                     $montantLFF += $ligne->getMontant();
                 }
                 foreach ($selectedFiche->getLigneFraisHorsForfait() as $ligne) {
-                    $montantLFHF += $ligne->getMontant();
+                    if ($ligne->getIsValidate()) {
+                        $montantLFHF += $ligne->getMontant();
+                    }
                 }
             }
         }
