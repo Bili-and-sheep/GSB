@@ -14,6 +14,8 @@ class SaisiFraisHorsForfaitType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $currentYear = (int) date('Y');
+
         $builder
             ->add('libelle', TextType::class, [
                 'label' => 'Libellé : ',
@@ -21,7 +23,12 @@ class SaisiFraisHorsForfaitType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date : '
+                'label' => 'Date de la facture : ',
+                'html5' => true,
+                'attr' => [
+                    'min' => $currentYear . '-01-01',
+                    'max' => $currentYear . '-12-31',
+                ]
             ])
             ->add('montant', MoneyType::class, [
                 'label' => 'Montant : ',

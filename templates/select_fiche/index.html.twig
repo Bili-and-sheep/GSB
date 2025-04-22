@@ -43,20 +43,48 @@
             </ul>
             <p><span class="font-semibold">Total:</span> {{ montantLFF }}€</p>
         </div>
-            {% if selectedFiche.ligneFraisHorsForfait is not empty %}
-                <div class="p-4 m-4 bg-white shadow-md rounded-lg max-w-3xl relative justify-center mx-auto">
-                    <h2 class="text-2xl font-bold mb-4">Ligne Frais Hors Forfait</h2>
-                        <ul>
-                            {% for ligne in selectedFiche.ligneFraisHorsForfait %}
-                                 <li>{{ ligne.libelle }} : {{ ligne.montant }}€</li>
-                                <br>
-                            {% endfor %}
+        <div class="p-4 m-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Ligne Frais Hors Forfait</h2>
 
-                        </ul>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border border-gray-200 shadow-sm rounded-md overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+                    <tr>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Libellé</th>
+                        <th class="px-4 py-3">Montant</th>
+                        <th class="px-4 py-3 text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100">
+                    {% for ligne in selectedFiche.ligneFraisHorsForfait %}
+                        <tr>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ ligne.date|date('d/m/Y') }}</td>
+                            <td class="px-4 py-2 break-words">{{ ligne.libelle }}</td>
+                            <td class="px-4 py-2">{{ ligne.montant|number_format(2, ',', ' ') }} €</td>
+                            <td class="px-4 py-2 text-center">
 
-                    <p><span class="font-semibold">Total:</span> {{ montantLFHF }}€</p>
-                </div>
-            {% endif %}
+                                <form method="post"
+                                      action="{{ path('app_select_fiche_ligne_hors_forfait_delete', { id: ligne.id }) }}"
+                                      onsubmit='return confirm("Confirmer la suppression de la ligne hors forfait \"{{ ligne.libelle|e('js') }}\" ?");'>                                    <button type="submit" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                        🗑️
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="px-4 py-3 text-center text-gray-500 italic">Aucune ligne hors forfait</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mt-4 text-right">
+                <span class="font-semibold">Total :</span> {{ montantLFHF|number_format(2, ',', ' ') }} €
+            </p>
+        </div>
         {% if selectedFiche.etat.id == 1 %}
             <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
                 <form method="post" action="{{ path('app_select_fiche_update', { id: selectedFiche.id }) }}">
