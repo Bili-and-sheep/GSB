@@ -5,33 +5,35 @@
 {% block body %}
 
     <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
-        <h1 class="text-2xl font-bold mb-4">Recherche de Fiche Frais</h1>
+        <h1 class="text-2xl font-bold mb-4">Recherche de Fiche Frais par Date</h1>
 
-        {{ form_start(form, { 'attr': { 'class': 'space-y-4' } }) }}
+        {{ form_start(formByDate, { 'attr': { 'class': 'space-y-4' } }) }}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                {{ form_label(form.mois, 'Mois', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
-                {{ form_widget(form.mois, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+                {{ form_label(formByDate.mois, 'Mois', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(formByDate.mois, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
             </div>
             <div>
-                {{ form_label(form.annee, 'Année', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
-                {{ form_widget(form.annee, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+                {{ form_label(formByDate.annee, 'Année', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(formByDate.annee, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
             </div>
             <div>
-                {{ form_label(form.user, 'Utilisateur', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
-                {{ form_widget(form.user, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+                {{ form_label(formByDate.user, 'Utilisateur', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(formByDate.user, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
             </div>
         </div>
 
         <div>
-            {{ form_widget(form.submit, {
+            {{ form_widget(formByDate.submit, {
                 'attr': {
                     'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4'
                 }
             }) }}
         </div>
-        {{ form_end(form) }}
+        {{ form_end(formByDate) }}
     </div>
+
+
 
     <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
         <h1 class="text-2xl font-bold mb-4">Fiche Frais à Valider</h1>
@@ -47,5 +49,51 @@
             {% endfor %}
         </div>
     </div>
+
+
+    <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
+        <h2 class="text-xl font-bold mb-4">Filtrer les fiches par état</h2>
+
+        {{ form_start(formByState) }}
+        {{ form_row(formByState.etat) }}
+        {{ form_widget(formByState.submit, {
+            'attr': {
+                'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4'
+            }
+        }) }}
+        {{ form_end(formByState) }}
+
+        {% if fichesState is defined and fichesState|length > 0 %}
+            <h3 class="mt-6 font-semibold">Résultats :</h3>
+            <table class="min-w-full border text-sm">
+                <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-2">Visiteur</th>
+                    <th class="p-2">Mois</th>
+                    <th class="p-2">État</th>
+                    <th class="p-2">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for fiche in fichesState %}
+                    <tr class="border-b">
+                        <td class="p-2">{{ fiche.user.nom }} {{ fiche.user.prenom }}</td>
+                        <td class="p-2">{{ fiche.mois|date('m/Y') }}</td>
+                        <td class="p-2">{{ fiche.etat.libelle }}</td>
+                        <td class="p-2">
+                            <a href="{{ path('app_comptable_fiche', { id: fiche.id }) }}" class="text-blue-600 hover:underline">
+                                Voir fiche
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% elseif fiches is defined %}
+            <p class="mt-4 text-gray-600">Aucune fiche trouvée pour cet état.</p>
+        {% endif %}
+    </div>
+
+
 
 {% endblock %}

@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\FicheFrais;
 use App\Entity\LigneFraisHorsForfait;
 use App\Form\FicheFraisComptableType;
 use App\Form\SelectFicheComptableType;
+use App\Form\SelectFicheByStateComptableType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +23,15 @@ final class ComptableController extends AbstractController
     #[Route('/manegeFF', name: 'app_comptable_manegeFF')]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $form = $this->createForm(SelectFicheComptableType::class);
-        $form->handleRequest($request);
+        $formSelectFicheType = $this->createForm(SelectFicheComptableType::class);
+        $formSelectFicheType->handleRequest($request);
+
+        $formSelectFicheByStateType = $this->createForm(SelectFicheByStateComptableType::class);
+        $formSelectFicheByStateType->handleRequest($request);
+        $fiches = [];
+
+
+
 
         // Valeur par défaut : les fiches à valider
         $toBeValidedValue = $entityManager->getRepository(FicheFrais::class)->createQueryBuilder('f')
@@ -32,13 +41,17 @@ final class ComptableController extends AbstractController
             ->getQuery()
             ->getResult();
 
+
+
+
+
         // Si le formulaire est soumis et valide, on filtre
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formSelectFicheType->isSubmitted() && $formSelectFicheType->isValid()) {
 
 
-            $data = $form->getData();
-            $mois = $form->get('mois')->getData();
-            $annee = $form->get('annee')->getData();
+            $data = $formSelectFicheType->getData();
+            $mois = $formSelectFicheType->get('mois')->getData();
+            $annee = $formSelectFicheType->get('annee')->getData();
             $user = $data['user'];
 
             $date = new \DateTimeImmutable("{$annee}-{$mois}-01");
@@ -53,9 +66,29 @@ final class ComptableController extends AbstractController
         }
 
 
+
+
+
+
+
+
+
+        if ($formSelectFicheByStateType->isSubmitted() && $formSelectFicheByStateType->isValid()) {
+            $etat = $formSelectFicheByStateType->get('etat')->getData();
+            $fiches = $entityManager->getRepository(FicheFrais::class)->createQueryBuilder('f')
+                ->leftJoin('f.Etat', 'e')
+                ->where('f.Etat = :etat')
+                ->setParameter('etat', $etat)
+                ->getQuery()
+                ->getResult();
+        }
+
+
         return $this->render('comptable/index.html.twig', [
-            'ficheFrais' => $toBeValidedValue,
-            'form' => $form->createView(),
+            'ficheFrais' => $toBeValidedValue ?? [],
+            'formByDate' => $formSelectFicheType->createView(),
+            'formByState' => $formSelectFicheByStateType->createView(),
+            'fichesState' => $fiches,
         ]);
 
     }
@@ -111,4 +144,5 @@ final class ComptableController extends AbstractController
             'id' => $lfgf->getFicheFrais()->getId()
         ]);
     }
+
 }
