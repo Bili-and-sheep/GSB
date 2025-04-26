@@ -1,0 +1,1 @@
+{"version":1,"defects":{"App\\Tests\\Controller\\HomeControllerTest::testIndexPageIsSuccessful":4,"App\\Tests\\Controller\\HomeControllerTest::testIndexPageContainsWelcomeText":4},"times":{"App\\Tests\\Controller\\HomeControllerTest::testIndexPageIsSuccessful":0.724,"App\\Tests\\Controller\\HomeControllerTest::testIndexPageContainsWelcomeText":0.078}}
