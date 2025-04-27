@@ -53,13 +53,23 @@ class SelectFicheComptableType extends AbstractType
     }
 
     private function getMonthChoices(): array
-        {
-            $months = [];
-            for ($i = 1; $i <= 12; $i++) {
-                $months[str_pad($i, 2, '0', STR_PAD_LEFT)] = $i;
-            }
-            return $months;
-        }
+    {
+        $months = [
+            'Janvier' => 1,
+            'Février' => 2,
+            'Mars' => 3,
+            'Avril' => 4,
+            'Mai' => 5,
+            'Juin' => 6,
+            'Juillet' => 7,
+            'Août' => 8,
+            'Septembre' => 9,
+            'Octobre' => 10,
+            'Novembre' => 11,
+            'Décembre' => 12,
+        ];
+        return $months;
+    }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
