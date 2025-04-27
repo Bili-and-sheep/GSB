@@ -226,6 +226,10 @@ GSB/
 
 ---
 
+## Cahier des charges
+- [Télécharger le cahier des charges GSB](public/GSB-Organisation.pdf)
+
+
 ## Structure de la base de données
 
 Voici la modélisation principale de la base de données, utilisée pour structurer l'application :
