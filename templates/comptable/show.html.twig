@@ -80,6 +80,12 @@
                                     {{ ligne.isValidate ? 'Refuser' : 'Accepter' }}
                                 </button>
                         </form>
+                        <form method="post" action="{{ path('app_comptable_fiche_report', {'id': ligne.id}) }}" style="display:inline-block;" onsubmit="return confirm('Voulez-vous vraiment reporter ce frais au mois suivant ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('report' ~ ligne.id) }}">
+                            <button type="submit" class="">
+                                Reporter ➡️
+                            </button>
+                        </form>
                     </td>
                 </tr>
             {% else %}

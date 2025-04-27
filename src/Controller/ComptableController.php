@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Etat;
 use App\Entity\FicheFrais;
+use App\Entity\FraisForfait;
+use App\Entity\LigneFraisForfait;
 use App\Entity\LigneFraisHorsForfait;
 use App\Form\FicheFraisComptableType;
 use App\Form\SelectFicheComptableType;
@@ -142,6 +144,81 @@ final class ComptableController extends AbstractController
 
         return $this->redirectToRoute('app_comptable_fiche', [
             'id' => $lfgf->getFicheFrais()->getId()
+        ]);
+    }
+
+
+    #[Route('/fiche/reporter/{id}', name: 'app_comptable_fiche_report', methods: ['POST'])]
+    public function reportHorsForfait(LigneFraisHorsForfait $lfgf, EntityManagerInterface $em): Response
+    {
+        $FicheEnCours = $lfgf->getFicheFrais();
+        $user     = $FicheEnCours->getUser();
+
+        // calcul du mois suivant
+        $currentMois = $FicheEnCours->getMois();
+        $year  = (int) $currentMois->format('Y');
+        $month = (int) $currentMois->format('m');
+        if ($month === 12) {
+            $year++;
+            $month = 1;
+        } else {
+            $month++;
+        }
+        // on fixe au premier jour du mois
+        $nextMoisDate = new \DateTime(sprintf('%04d-%02d-01', $year, $month));
+
+        // on cherche la fiche du mois suivant
+        $FicheFrais = $em->getRepository(FicheFrais::class);
+        $FicheMoisApres = $FicheFrais->findOneBy([
+            'User' => $user,
+            'mois' => $nextMoisDate,
+        ]);
+
+        if (!$FicheMoisApres) {
+            // création si nécessaire
+            $FicheMoisApres = new FicheFrais();
+            $FicheMoisApres
+                ->setUser($user)
+                ->setMois($nextMoisDate)
+                ->setNbJustificatifs(0)
+                ->setDateModif(new \DateTime())
+                ->setMontantValid('0')
+                ->setToBeValided(false)
+            ;
+            // état « Saisie en cours »
+            $etat = $em->getRepository(Etat::class)->find(1);
+            if (!$etat) {
+                throw new \Exception('Etat avec ID 1 introuvable.');
+            }
+            $FicheMoisApres->setEtat($etat);
+            $em->persist($FicheMoisApres);
+
+            // on initialise les lignes forfait à 0
+            $forfaits = $em->getRepository(FraisForfait::class)->findAll();
+            foreach ($forfaits as $forfait) {
+                $lff = new LigneFraisForfait();
+                $lff
+                    ->setFicheFrais($FicheMoisApres)
+                    ->setFraisForfait($forfait)
+                    ->setQuantite(0)
+                ;
+                $em->persist($lff);
+            }
+        }
+
+        $FicheEnCours->removeLigneFraisHorsForfait($lfgf);
+        $FicheMoisApres->addLigneFraisHorsForfait($lfgf);
+
+
+        $libelle = $lfgf->getLibelle();
+        if (str_starts_with($libelle, 'REFUSÉ : ')) {
+            $lfgf->setLibelle(substr($libelle, strlen('REFUSÉ : ')));
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_comptable_fiche', [
+            'id' => $FicheMoisApres->getId(),
         ]);
     }
 
