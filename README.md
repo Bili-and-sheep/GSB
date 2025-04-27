@@ -83,7 +83,11 @@ symfony serve -d
 
 2. **Modifier les utilisateurs par défaut :**
    - Accéder à `/user` pour modifier les rôles des utilisateurs.
-   - Utilisateur de démo :
+   #### Rôles utilisateurs
+   - **Visiteur médical** (`ROLE_VISITEUR`) : saisie et consultation des frais.
+   - **Comptable** (`ROLE_COMPTABLE`) : validation, correction et traitement des frais.
+   
+   #### Utilisateur de démo :
       - **Email :** `villechalane.louis@gsb.fr`
       - **Mot de passe :** `jux7g`
 
@@ -105,10 +109,127 @@ GSB/
 ├── assets/         # Fichiers frontend
 ```
 
+## Détail complet des routes de l'application (avec accès global et sécurité)
+
+---
+
+### ComptableController.php
+
+- 🔑 Accès global : `ROLE_COMPTABLE`
+- 🔒 Sécurisé : Authentification requise
+
+**Routes :**
+- **GET** `/comptable/fiche`  
+  📄 Liste toutes les fiches de frais à valider.
+
+- **GET** `/comptable/fiche/{id}`  
+  📄 Détail d'une fiche de frais pour modification ou validation.
+
+- **POST** `/comptable/fiche/{id}/valider`  
+  ✅ Valider une fiche de frais.
+
+- **POST** `/comptable/ligne/{id}/supprimer`  
+  ❌ Supprimer une ligne de frais spécifique.
+
+---
+
+### FicheFraisController.php
+
+- 🔑 Accès global : `ROLE_VISITEUR`
+- 🔒 Sécurisé : Authentification requise
+
+**Routes :**
+- **GET** `/fiche`  
+  📄 Liste des fiches du visiteur connecté, création automatique si nécessaire.
+
+- **GET** `/fiche/{id}`  
+  📄 Détail d'une fiche pour modification ou ajout de frais.
+
+- **POST** `/fiche/{id}/forfait`  
+  ➕ Ajout ou mise à jour des frais forfaitisés.
+
+- **POST** `/fiche/{id}/horsforfait`  
+  ➕ Ajout d'un frais hors forfait.
+
+- **POST** `/fiche/{id}/horsforfait/{idhf}/supprimer`  
+  ❌ Suppression d'un frais hors forfait.
+
+---
+
+### ImportController.php
+
+- 🔑 Accès global : `ROLE_COMPTABLE`
+- 🔒 Sécurisé : Authentification requise
+
+**Routes :**
+- **GET** `/import`  
+  📄 Page listant les différents imports disponibles.
+
+- **POST** `/import/users`  
+  🛠 Importation massive des utilisateurs.
+
+- **POST** `/import/fraisforfait`  
+  🛠 Importation des frais forfait de base.
+
+- **POST** `/import/fichefrais`  
+  🛠 Importation de fiches de frais types.
+
+---
+
+### SecurityController.php
+
+- 🔑 Accès global : Public (login/logout)
+- 🔒 Sécurisé : Authentification requise pour `/logout`
+
+**Routes :**
+- **GET** `/login`  
+  🔓 Page de connexion.
+
+- **POST** `/logout`  
+  🔒 Déconnexion de l'utilisateur connecté.
+
+---
+
+### SelectFicheController.php
+
+- 🔑 Accès global : `ROLE_VISITEUR` et `ROLE_COMPTABLE`
+- 🔒 Sécurisé : Authentification requise
+
+**Route :**
+- **GET** `/select-fiche`  
+  📄 Sélection d'une fiche de frais en fonction de la période.
+
+---
+
+### Shebo2faController.php
+
+- 🔑 Accès global : Utilisateur connecté
+- 🔒 Sécurisé : Authentification requise
+
+**Routes :**
+- **GET** `/2fa/setup`  
+  🔒 Page pour configurer l'authentification à deux facteurs (QR Code).
+
+- **POST** `/2fa/validate`  
+  🔒 Validation du code 2FA saisi par l'utilisateur.
+
+---
+
+### Top3DesPlusGrosConDeGSBsarlSylvieDeLaRHlesAappeleeParcequeLeursFicheDepasseLePlafondController.php
+
+- 🔑 Accès global : `ROLE_COMPTABLE`
+- 🔒 Sécurisé : Authentification requise
+
+**Route :**
+- **GET** `/top3`  
+  🏆 Affichage du classement humoristique des 3 plus gros dépassements de frais.
+
+---
+
 ## Structure de la base de données
 
-![Structure de la base de données GSB](public/GSB_DDC.png)
-
+Voici la modélisation principale de la base de données, utilisée pour structurer l'application :
+<img src="public/GSB_DDC.png" alt="Diagramme de classes GSB" width="700px">
 - Tables principales : `User`, `FraisForfait`, `FicheFrais`, `LigneFraisForfait`, `LigneFraisHorsForfait`
 
 ## Tests
@@ -118,6 +239,66 @@ Lancer les tests unitaires et fonctionnels :
 php bin/console doctrine:schema:create --env=test
 php bin/phpunit
 ```
+
+## Détail des tests fonctionnels et unitaires
+
+---
+
+### AccessControlTest.php
+
+- Vérifie que **les utilisateurs non authentifiés** sont **correctement redirigés** vers la page de login lorsqu'ils essaient d'accéder à des routes protégées.
+- Teste aussi l'accès refusé pour les utilisateurs n'ayant pas le bon rôle.
+
+---
+
+### ComptableControllerTest.php
+
+- Teste toutes les fonctionnalités principales du **ComptableController** :
+    - Accès à la liste des fiches.
+    - Détail et validation d'une fiche de frais.
+    - Suppression de lignes de frais invalides.
+
+---
+
+### ProtectedRouteTest.php
+
+- Teste l'accès aux **routes nécessitant une authentification**.
+- Vérifie que toutes les routes sensibles sont **protégées par le firewall Symfony**.
+- Simule un utilisateur non connecté pour s'assurer de la bonne sécurisation.
+
+---
+
+### RoleAccessTest.php
+
+- Teste que :
+    - Les **visiteurs médicaux** peuvent accéder uniquement aux routes qui leur sont destinées.
+    - Les **comptables** peuvent accéder aux routes de gestion des frais.
+
+---
+
+### SelectFicheControllerTest.php
+
+- Teste le fonctionnement de la **sélection de fiche de frais** :
+    - Liste des fiches disponibles pour le visiteur connecté.
+    - Accès au détail d'une fiche après sélection.
+
+---
+
+### Top3DesPlusGrosConControllerTest.php
+
+- Teste l'affichage correct de la **page "Top 3 des dépassements"**.
+- Vérifie que seuls les **comptables** peuvent accéder à cette fonctionnalité.
+- Teste le contenu de la page (présence du titre, des noms des utilisateurs, etc.).
+
+---
+
+### DatabaseTestCase.php
+
+- Classe de **base** utilisée par d'autres tests fonctionnels.
+- Initialise une **connexion à la base de test** (`test` environment).
+- Permet de charger des données spécifiques dans la base avant de lancer des tests (`fixtures`).
+
+---
 
 ## Maintenance prévue
 
