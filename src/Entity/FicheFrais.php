@@ -213,4 +213,25 @@ class FicheFrais
 
         return $this;
     }
+    public function totalLFHF(): float
+    {
+        $total = 0;
+        foreach ($this->LigneFraisHorsForfait as $lfhf) {
+            if ($lfhf->getIsValidate()) {
+                $total += (float) $lfhf->getMontant();
+            }
+        }
+
+        return $total;
+    }
+
+    public function totalLFF(): float
+    {
+        $total = 0;
+        foreach ($this->LigneFraisForfait as $ligne) {
+            $total += $ligne->getMontant();
+        }
+
+        return $total;
+    }
 }
