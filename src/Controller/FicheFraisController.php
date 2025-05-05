@@ -67,6 +67,7 @@ final class FicheFraisController extends AbstractController
             $ficheFrais->setMois($currentMonth);
             $ficheFrais->setUser($user);
             $ficheFrais->setToBeValided(false);
+            $ficheFrais->setPlafondLFHF(2450);
 
             //récupération de l'état "crée" (id = 1) pour la fiche de frais
             $etat = $entityManager->getRepository(Etat::class)->find(1);
@@ -143,13 +144,22 @@ final class FicheFraisController extends AbstractController
         }
         $formLFHF->handleRequest($request);
         if ($formLFHF->isSubmitted() && $formLFHF->isValid()) {
-            $ficheFrais->addLigneFraisHorsForfait($ligneFraisHorsForfait);
-            $ligneFraisHorsForfait->setFicheFrais($ficheFrais);
-            $entityManager->persist($ligneFraisHorsForfait);
-            $entityManager->flush();
+            $montantLFHF = (float) $ligneFraisHorsForfait->getMontant();
+            $totalLFHF = $ficheFrais->totalLFHF();
+
+            if (($totalLFHF + $montantLFHF) > $ficheFrais->getPlafondLFHF()) {
+                $this->addFlash('error',
+                    'Dépassement de plafond de frais hors forfait (' . $ficheFrais->getPlafondLFHF() . '€) Appelez votre Manager pour modifier le plafond');
+
+
+            } else {
+                $ficheFrais->addLigneFraisHorsForfait($ligneFraisHorsForfait);
+                $ligneFraisHorsForfait->setFicheFrais($ficheFrais);
+                $entityManager->persist($ligneFraisHorsForfait);
+                $entityManager->flush();
+            }
 
             return $this->redirectToRoute('app_fiche_frais_add_lff', [], Response::HTTP_SEE_OTHER);
-
         }
 
         return $this->render('fiche_frais/new_limited.html.twig', [

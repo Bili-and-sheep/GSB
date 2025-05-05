@@ -25,6 +25,9 @@ class FicheFrais
     #[ORM\Column]
     private ?bool $toBeValided = null;
 
+    #[ORM\Column]
+    private ?float $PlafondLFHF = null;
+
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $montantValid = null;
 
@@ -153,6 +156,16 @@ class FicheFrais
         return $this;
     }
 
+    public function getPlafondLFHF(): ?float
+    {
+        return $this->PlafondLFHF;
+    }
+    public function setPlafondLFHF(float $PlafondLFHF): static
+    {
+        $this->PlafondLFHF = $PlafondLFHF;
+
+        return $this;
+    }
 
     /**
      * @return Collection<int, LigneFraisForfait>

@@ -28,6 +28,11 @@ class SelectFicheController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var FicheFrais $selectedFiche */
             $selectedFiche = $form->get('fiche')->getData();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var FicheFrais $selectedFiche */
+            $selectedFiche = $form->get('fiche')->getData();
             if ($selectedFiche) {
                 foreach ($selectedFiche->getLigneFraisForfait() as $ligne) {
                     $montantLFF += $ligne->getMontant();
@@ -47,6 +52,8 @@ class SelectFicheController extends AbstractController
             'controller_name' => 'SelectFicheController',
             'montantLFF' => $montantLFF,
             'montantLFHF' => $montantLFHF,
+//            'montantLFF' => $selectedFiche ? $selectedFiche->totalLFF() : 0,
+//            'montantLFHF' => $selectedFiche ? $selectedFiche->totalLFHF() : 0,
         ]);
     }
     #[Route('/selectfiche/update/{id}', name: 'app_select_fiche_update', methods: ['POST'])]
