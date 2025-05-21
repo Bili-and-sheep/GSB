@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ManagerController!{% endblock %}
+
+{% block body %}
+
+
+    <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
+        <h1 class="text-2xl font-bold mb-4">Recherche de Fiche Frais par Date</h1>
+
+        {{ form_start(formByDate, { 'attr': { 'class': 'space-y-4' } }) }}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                {{ form_label(formByDate.mois, 'Mois', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(formByDate.mois, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+            </div>
+            <div>
+                {{ form_label(formByDate.annee, 'Année', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(formByDate.annee, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+            </div>
+            <div>
+                {{ form_label(formByDate.user, 'Utilisateur', { 'label_attr': {'class': 'block text-sm font-medium text-gray-700 text-center'} }) }}
+                {{ form_widget(formByDate.user, { 'attr': { 'class': 'block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none' } }) }}
+            </div>
+        </div>
+
+        <div>
+            {{ form_widget(formByDate.submit, {
+                'attr': {
+                    'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4'
+                }
+            }) }}
+        </div>
+        {{ form_end(formByDate) }}
+    </div>
+
+    <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
+        <h1 class="text-2xl font-bold mb-4">Fiche Frais à Valider</h1>
+        <div class="space-y-4">
+            {% for fiche in ficheFrais %}
+                <form method="get" action="{{ path('app_manager_fiche', { id: fiche.id }) }}">
+                    <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 my-2">
+                        {{ fiche.user.nom }} {{ fiche.user.prenom }} - {{ fiche.mois|date('Y-m') }} - {{ fiche.etat.libelle }}
+                    </button>
+                </form>
+            {% else %}
+                <p class="text-gray-500">Aucune fiche de frais à valider.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -43,6 +43,7 @@ security:
         - { path: ^/2fa, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/comptable, roles: ROLE_COMPTABLE }
+        - { path: ^/manager, roles: ROLE_MANAGER }
 
 
 when@test:

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 space-y-4 z-50">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="toast p-4 text-white {{ type == 'success' ? 'bg-green-500' : 'bg-red-500' }} rounded-lg shadow-md flex items-center justify-between" role="alert">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.remove()" class="ml-4 text-white font-bold">&times;</button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div class="p-4 bg-white shadow-md rounded-lg max-w-3xl mx-auto my-6">
+            <h2 class="text-xl font-semibold mb-4">Modifier la fiche</h2>
+
+            {{ form_start(form) }}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                {{ form_row(form.plafondLFHF) }}
+
+            </div>
+
+            <div class="mt-6">
+                {{ form_widget(form.submit, {
+                    'attr': {
+                        'class': 'w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4'
+                    }
+                }) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+                document.querySelectorAll(".toast").forEach(toast => toast.remove());
+            }, 5000);
+        });
+    </script>
+{% endblock %}
+
+

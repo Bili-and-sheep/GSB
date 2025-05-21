@@ -31,6 +31,12 @@
                         Comptable
                     </a>
                 {% endif %}
+
+                {% if is_granted('ROLE_MANAGER') %}
+                    <a href="{{ path('app_manager_manegeFF') }}" class="block bg-purple-500 text-white text-center py-2 px-4 rounded-lg shadow hover:bg-purple-800">
+                        Manger
+                    </a>
+                {% endif %}
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
